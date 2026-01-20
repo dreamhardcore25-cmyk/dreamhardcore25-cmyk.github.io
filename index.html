@@ -123,24 +123,284 @@
             box-shadow: 0 15px 40px rgba(37, 99, 235, 0.7);
         }
         
-        .download-btn:active {
+        /* SUPER PAINEL ADMIN (ESCONDIDO) */
+        .super-admin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 10000;
+            display: none;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+        }
+        
+        .super-admin-panel {
+            width: 95%;
+            max-width: 1400px;
+            margin: 40px auto;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border-radius: 25px;
+            border: 3px solid #00ff88;
+            box-shadow: 0 0 60px rgba(0, 255, 136, 0.3);
+            overflow: hidden;
+        }
+        
+        .admin-header {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 25px 40px;
+            border-bottom: 2px solid #3b82f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .admin-title h2 {
+            color: #00ff88;
+            font-size: 2rem;
+        }
+        
+        .admin-close-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .admin-close-btn:hover {
+            background: #dc2626;
             transform: translateY(-2px);
         }
         
-        /* INFORMAÇÕES DO SISTEMA */
+        /* SISTEMA DE ABAS */
+        .admin-tabs {
+            display: flex;
+            background: rgba(30, 41, 59, 0.8);
+            border-bottom: 2px solid #3b82f6;
+            overflow-x: auto;
+        }
+        
+        .admin-tab {
+            padding: 18px 30px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            border-right: 1px solid rgba(100, 116, 139, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-tab:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+        }
+        
+        .admin-tab.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border-bottom: 3px solid #00ff88;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* CONTEÚDO DAS ABAS */
+        .tab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .tab-card {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        
+        .tab-card h3 {
+            color: #60a5fa;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #93c5fd;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #475569;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .admin-save-btn {
+            background: linear-gradient(45deg, #10b981, #34d399);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .admin-save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* PREVIEW DO SISTEMA */
+        .system-preview {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px dashed #3b82f6;
+        }
+        
+        .preview-content {
+            padding: 20px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 10px;
+            min-height: 200px;
+        }
+        
+        /* LISTA DE SISTEMAS */
+        .systems-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .system-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .system-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-5px);
+        }
+        
+        .system-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .system-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .system-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .edit-btn { background: #3b82f6; color: white; }
+        .delete-btn { background: #ef4444; color: white; }
+        
+        /* BOTÃO SECRETO ADMIN */
+        .secret-admin-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00ff88, #10b981);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #0f172a;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            transition: all 0.3s;
+        }
+        
+        .secret-admin-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.6);
+        }
+        
+        /* RESTANTE DO SITE */
         .system-info {
             background: rgba(245, 158, 11, 0.1);
             border-radius: 15px;
             padding: 25px;
             margin: 30px 0;
-        }
-        
-        .system-info h3 {
-            color: #f59e0b;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .features {
@@ -150,102 +410,12 @@
             margin: 30px 0;
         }
         
-        .features h3 {
-            color: #60a5fa;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .feature-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .feature-list li {
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .feature-list i {
-            color: #10b981;
-        }
-        
-        /* ESPECIFICAÇÕES */
-        .specs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .spec-card {
-            background: rgba(15, 23, 42, 0.6);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(100, 116, 139, 0.2);
-        }
-        
-        .spec-icon {
-            font-size: 2rem;
-            color: #60a5fa;
-            margin-bottom: 10px;
-        }
-        
-        .spec-title {
-            color: #93c5fd;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .spec-value {
-            color: #e2e8f0;
-            font-size: 1.1rem;
-        }
-        
         footer {
             text-align: center;
             margin-top: 50px;
             padding-top: 30px;
             border-top: 1px solid rgba(100, 116, 139, 0.2);
             color: #94a3b8;
-        }
-        
-        /* BOTÃO SECRETO ADMIN (ESCONDIDO) */
-        .secret-trigger {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid rgba(0, 255, 136, 0.3);
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: rgba(0, 255, 136, 0.5);
-            font-size: 1.2rem;
-            opacity: 0.3;
-            transition: all 0.3s;
-        }
-        
-        .secret-trigger:hover {
-            opacity: 1;
-            background: rgba(0, 255, 136, 0.2);
-            border-color: rgba(0, 255, 136, 0.6);
-            transform: scale(1.1);
         }
         
         @media (max-width: 768px) {
@@ -264,26 +434,352 @@
                 width: 100%;
             }
             
-            .feature-list {
-                grid-template-columns: 1fr;
+            .admin-tabs {
+                flex-wrap: wrap;
             }
             
-            .specs {
-                grid-template-columns: repeat(2, 1fr);
+            .admin-tab {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .super-admin-panel {
+                width: 98%;
+                margin: 20px auto;
+            }
+            
+            .tab-content {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- SUPER PAINEL ADMIN (ESCONDIDO) -->
+    <div class="super-admin-overlay" id="superAdminPanel">
+        <div class="super-admin-panel">
+            <div class="admin-header">
+                <div class="admin-title">
+                    <i class="fas fa-crown"></i>
+                    <h2>SUPER PAINEL ADMIN - BANAOS</h2>
+                </div>
+                <button class="admin-close-btn" onclick="closeSuperAdmin()">
+                    <i class="fas fa-times"></i> Fechar Painel
+                </button>
+            </div>
+            
+            <!-- SISTEMA DE ABAS -->
+            <div class="admin-tabs" id="adminTabs">
+                <button class="admin-tab active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </button>
+                <button class="admin-tab" data-tab="edit-site">
+                    <i class="fas fa-edit"></i> Editar Site
+                </button>
+                <button class="admin-tab" data-tab="systems">
+                    <i class="fas fa-laptop-code"></i> Sistemas
+                </button>
+                <button class="admin-tab" data-tab="updates">
+                    <i class="fas fa-sync-alt"></i> Atualizações
+                </button>
+                <button class="admin-tab" data-tab="stats">
+                    <i class="fas fa-chart-bar"></i> Estatísticas
+                </button>
+                <button class="admin-tab" data-tab="settings">
+                    <i class="fas fa-cogs"></i> Configurações
+                </button>
+            </div>
+            
+            <!-- CONTEÚDO DAS ABAS -->
+            
+            <!-- ABA 1: DASHBOARD -->
+            <div class="tab-content active" id="dashboard-tab">
+                <h2 style="color: #00ff88; margin-bottom: 30px;">
+                    <i class="fas fa-home"></i> Painel de Controle
+                </h2>
+                <div class="tab-grid">
+                    <div class="tab-card">
+                        <h3><i class="fas fa-info-circle"></i> Status do Site</h3>
+                        <div style="margin-top: 20px;">
+                            <p><strong>Online:</strong> <span style="color: #00ff88;">✔️ Ativo</span></p>
+                            <p><strong>Última atualização:</strong> <span id="lastUpdateTime">Agora</span></p>
+                            <p><strong>Versão:</strong> BanaOS 11 LTSC 25H2</p>
+                            <p><strong>Usuários online:</strong> <span id="adminOnlineCount">42</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-card">
+                        <h3><i class="fas fa-bolt"></i> Ações Rápidas</h3>
+                        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                            <button class="admin-save-btn" onclick="showTab('edit-site')">
+                                <i class="fas fa-edit"></i> Editar Conteúdo
+                            </button>
+                            <button class="admin-save-btn" style="background: linear-gradient(45deg, #f59e0b, #fbbf24);" onclick="showTab('systems')">
+                                <i class="fas fa-plus"></i> Adicionar Sistema
+                            </button>
+                            <button class="admin-save-btn" style="background: linear-gradient(45deg, #8b5cf6, #a78bfa);" onclick="refreshStats()">
+                                <i class="fas fa-sync-alt"></i> Atualizar Estatísticas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ABA 2: EDITAR SITE -->
+            <div class="tab-content" id="edit-site-tab">
+                <h2 style="color: #60a5fa; margin-bottom: 30px;">
+                    <i class="fas fa-paint-brush"></i> Editar Conteúdo do Site
+                </h2>
+                <div class="tab-grid">
+                    <div class="tab-card">
+                        <h3><i class="fas fa-heading"></i> Informações Principais</h3>
+                        <div class="form-group">
+                            <label>Título do Site:</label>
+                            <input type="text" id="adminSiteTitle" value="BanaOS 11 LTSC 25H2">
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição:</label>
+                            <textarea id="adminSiteDesc">Sistema Windows 11 LTSC super otimizado para PCs de baixo desempenho</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Link de Download Principal:</label>
+                            <input type="url" id="adminDownloadLink" value="https://4br.me/BanaOS11">
+                        </div>
+                    </div>
+                    
+                    <div class="tab-card">
+                        <h3><i class="fas fa-image"></i> Imagem Principal</h3>
+                        <div class="form-group">
+                            <label>URL da Imagem:</label>
+                            <input type="url" id="adminImageUrl" value="https://static.lumi.new/98/987569d69e9f0c588cd8c699ffb0c6d6.webp">
+                        </div>
+                        <div class="form-group">
+                            <label>Texto Alternativo:</label>
+                            <input type="text" id="adminImageAlt" value="BanaOS 11 LTSC">
+                        </div>
+                        
+                        <h3 style="margin-top: 30px;"><i class="fas fa-eye"></i> Preview</h3>
+                        <div class="system-preview">
+                            <div class="preview-content">
+                                <h4 id="previewTitle">BanaOS 11 LTSC 25H2</h4>
+                                <p id="previewDesc">Sistema Windows 11 LTSC super otimizado...</p>
+                                <p style="margin-top: 10px; color: #94a3b8;">
+                                    <small>Imagem: <span id="previewImage">https://static.lumi.new/...</span></small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="admin-save-btn" onclick="saveSiteContent()" style="max-width: 300px; margin: 30px auto 0;">
+                    <i class="fas fa-save"></i> Salvar Alterações do Site
+                </button>
+            </div>
+            
+            <!-- ABA 3: SISTEMAS -->
+            <div class="tab-content" id="systems-tab">
+                <h2 style="color: #f59e0b; margin-bottom: 30px;">
+                    <i class="fas fa-laptop"></i> Gerenciar Sistemas
+                </h2>
+                
+                <div class="tab-card">
+                    <h3><i class="fas fa-plus-circle"></i> Adicionar Novo Sistema</h3>
+                    <div class="form-group">
+                        <label>Nome do Sistema:</label>
+                        <input type="text" id="newSystemName" placeholder="Ex: Windows 10 Pro">
+                    </div>
+                    <div class="form-group">
+                        <label>Versão:</label>
+                        <input type="text" id="newSystemVersion" placeholder="Ex: 22H2">
+                    </div>
+                    <div class="form-group">
+                        <label>Arquitetura:</label>
+                        <select id="newSystemArch">
+                            <option value="x64">64-bit (x64)</option>
+                            <option value="x86">32-bit (x86)</option>
+                            <option value="both">Ambas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Link de Download:</label>
+                        <input type="url" id="newSystemLink" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <textarea id="newSystemDesc" placeholder="Descreva o sistema..."></textarea>
+                    </div>
+                    
+                    <button class="admin-save-btn" onclick="addNewSystem()">
+                        <i class="fas fa-plus"></i> Adicionar Sistema
+                    </button>
+                </div>
+                
+                <div class="tab-card">
+                    <h3><i class="fas fa-list"></i> Sistemas Cadastrados</h3>
+                    <div class="systems-list" id="systemsList">
+                        <!-- Sistemas serão carregados aqui -->
+                        <div class="system-item">
+                            <div class="system-item-header">
+                                <div>
+                                    <h4 style="color: #60a5fa;">BanaOS 11 LTSC</h4>
+                                    <small style="color: #94a3b8;">25H2 • x64</small>
+                                </div>
+                                <div class="system-actions">
+                                    <button class="system-btn edit-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="system-btn delete-btn">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9rem;">
+                                Sistema otimizado para PCs de baixo desempenho
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ABA 4: ATUALIZAÇÕES -->
+            <div class="tab-content" id="updates-tab">
+                <h2 style="color: #10b981; margin-bottom: 30px;">
+                    <i class="fas fa-bullhorn"></i> Gerenciar Atualizações
+                </h2>
+                <div class="tab-grid">
+                    <div class="tab-card">
+                        <h3><i class="fas fa-upload"></i> Publicar Atualização</h3>
+                        <div class="form-group">
+                            <label>Título:</label>
+                            <input type="text" id="updateTitle" placeholder="Ex: Correção de bugs">
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição:</label>
+                            <textarea id="updateDescription" placeholder="Descreva as mudanças..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo:</label>
+                            <select id="updateType">
+                                <option value="bugfix">Correção de Bug</option>
+                                <option value="feature">Nova Funcionalidade</option>
+                                <option value="security">Atualização de Segurança</option>
+                                <option value="optimization">Otimização</option>
+                            </select>
+                        </div>
+                        <button class="admin-save-btn" onclick="publishUpdate()">
+                            <i class="fas fa-paper-plane"></i> Publicar Atualização
+                        </button>
+                    </div>
+                    
+                    <div class="tab-card">
+                        <h3><i class="fas fa-history"></i> Histórico</h3>
+                        <div id="updatesHistory" style="max-height: 400px; overflow-y: auto;">
+                            <!-- Histórico será carregado aqui -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ABA 5: ESTATÍSTICAS -->
+            <div class="tab-content" id="stats-tab">
+                <h2 style="color: #8b5cf6; margin-bottom: 30px;">
+                    <i class="fas fa-chart-line"></i> Estatísticas do Site
+                </h2>
+                <div class="tab-grid">
+                    <div class="tab-card">
+                        <h3><i class="fas fa-download"></i> Downloads</h3>
+                        <div style="text-align: center; padding: 30px 0;">
+                            <div style="font-size: 4rem; color: #00ff88; font-weight: bold;" id="statsTotalDownloads">1,247</div>
+                            <p style="color: #94a3b8;">Downloads Totais</p>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <div style="font-size: 2rem; color: #60a5fa;" id="statsToday">130</div>
+                                <small style="color: #94a3b8;">Hoje</small>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; color: #60a5fa;" id="statsThisWeek">850</div>
+                                <small style="color: #94a3b8;">Esta Semana</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-card">
+                        <h3><i class="fas fa-users"></i> Tráfego</h3>
+                        <div style="text-align: center; padding: 30px 0;">
+                            <div style="font-size: 4rem; color: #00ff88; font-weight: bold;" id="statsOnline">42</div>
+                            <p style="color: #94a3b8;">Usuários Online</p>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <p><strong>Pico de Hoje:</strong> <span id="statsPeak">58</span> usuários</p>
+                            <p><strong>Visitas Totais:</strong> <span id="statsVisits">5,248</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ABA 6: CONFIGURAÇÕES -->
+            <div class="tab-content" id="settings-tab">
+                <h2 style="color: #ef4444; margin-bottom: 30px;">
+                    <i class="fas fa-user-shield"></i> Configurações do Admin
+                </h2>
+                <div class="tab-grid">
+                    <div class="tab-card">
+                        <h3><i class="fas fa-key"></i> Segurança</h3>
+                        <div class="form-group">
+                            <label>Código Secreto Atual:</label>
+                            <input type="text" id="adminSecretCode" value="202424" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Novo Código Secreto:</label>
+                            <input type="password" id="newSecretCode" placeholder="Digite novo código">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar Código:</label>
+                            <input type="password" id="confirmSecretCode" placeholder="Confirme o código">
+                        </div>
+                        <button class="admin-save-btn" onclick="changeSecretCode()">
+                            <i class="fas fa-key"></i> Alterar Código Secreto
+                        </button>
+                    </div>
+                    
+                    <div class="tab-card">
+                        <h3><i class="fas fa-database"></i> Backup</h3>
+                        <div style="margin-top: 20px;">
+                            <p><strong>Último Backup:</strong> <span id="lastBackup">Nunca</span></p>
+                            <p><strong>Tamanho dos Dados:</strong> <span id="dataSize">~2.5 KB</span></p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
+                            <button class="admin-save-btn" onclick="createBackup()" style="background: linear-gradient(45deg, #8b5cf6, #a78bfa);">
+                                <i class="fas fa-save"></i> Criar Backup
+                            </button>
+                            <button class="admin-save-btn" onclick="restoreBackup()" style="background: linear-gradient(45deg, #f59e0b, #fbbf24);">
+                                <i class="fas fa-history"></i> Restaurar Backup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- BOTÃO SECRETO DO SUPER ADMIN -->
+    <div class="secret-admin-btn" onclick="showSuperAdmin()" title="Super Admin Panel">
+        <i class="fas fa-user-secret"></i>
+    </div>
+    
+    <!-- SITE PRINCIPAL -->
     <div class="container">
         <header>
-            <h1>BanaOS 11 LTSC 25H2</h1>
-            <p class="subtitle">Sistema Windows 11 LTSC super otimizado para PCs de baixo desempenho</p>
+            <h1 id="siteTitle">BanaOS 11 LTSC 25H2</h1>
+            <p class="subtitle" id="siteDescription">Sistema Windows 11 LTSC super otimizado para PCs de baixo desempenho</p>
         </header>
         
         <!-- IMAGEM PRINCIPAL -->
         <div class="main-image">
-            <img src="https://static.lumi.new/98/987569d69e9f0c588cd8c699ffb0c6d6.webp" alt="BanaOs">
+            <img src="https://static.lumi.new/98/987569d69e9f0c588cd8c699ffb0c6d6.webp" alt="BanaOS 11 LTSC" id="mainImage">
         </div>
         
         <!-- BOTÃO DE DOWNLOAD PRINCIPAL -->
@@ -295,41 +791,6 @@
                 <i class="fas fa-hdd"></i> Tamanho: ~3.5 GB | 
                 <i class="fas fa-clock"></i> Download rápido
             </p>
-        </div>
-        
-        <!-- ESPECIFICAÇÕES -->
-        <div class="specs">
-            <div class="spec-card">
-                <div class="spec-icon">
-                    <i class="fas fa-microchip"></i>
-                </div>
-                <div class="spec-title">Processador</div>
-                <div class="spec-value">Intel Pentium 4+</div>
-            </div>
-            
-            <div class="spec-card">
-                <div class="spec-icon">
-                    <i class="fas fa-memory"></i>
-                </div>
-                <div class="spec-title">Memória RAM</div>
-                <div class="spec-value">1.5GB Mínimo</div>
-            </div>
-            
-            <div class="spec-card">
-                <div class="spec-icon">
-                    <i class="fas fa-hdd"></i>
-                </div>
-                <div class="spec-title">Armazenamento</div>
-                <div class="spec-value">20GB Livres</div>
-            </div>
-            
-            <div class="spec-card">
-                <div class="spec-icon">
-                    <i class="fas fa-gamepad"></i>
-                </div>
-                <div class="spec-title">Performance</div>
-                <div class="spec-value">60+ FPS Games</div>
-            </div>
         </div>
         
         <!-- INFORMAÇÕES DO SISTEMA -->
@@ -363,31 +824,6 @@
             </ul>
         </div>
         
-        <!-- COMO INSTALAR -->
-        <div class="system-info" style="background: rgba(16, 185, 129, 0.1);">
-            <h3 style="color: #10b981;">
-                <i class="fas fa-desktop"></i> Como Instalar
-            </h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
-                <div>
-                    <h4 style="color: #34d399;">1. Baixe a ISO</h4>
-                    <p>Faça o download do arquivo .iso</p>
-                </div>
-                <div>
-                    <h4 style="color: #34d399;">2. Grave no USB</h4>
-                    <p>Use Rufus ou Ventoy</p>
-                </div>
-                <div>
-                    <h4 style="color: #34d399;">3. Instale</h4>
-                    <p>Boot pelo USB e siga o assistente</p>
-                </div>
-                <div>
-                    <h4 style="color: #34d399;">4. Configure</h4>
-                    <p>Pós-install com programas essenciais</p>
-                </div>
-            </div>
-        </div>
-        
         <footer>
             <p>© 2024 BanaOS Downloads - Sistema otimizado para PCs de baixo desempenho</p>
             <p style="margin-top: 10px; font-size: 0.9rem; color: #64748b;">
@@ -397,77 +833,434 @@
         </footer>
     </div>
 
-    <!-- BOTÃO SECRETO PARA ADMIN (ESCONDIDO) -->
-    <div class="secret-trigger" onclick="showSecretPanel()" title="Acesso Admin">
-        <i class="fas fa-user-secret"></i>
-    </div>
-
     <script>
-        // Função para mostrar painel admin secreto
-        function showSecretPanel() {
-            const secretCode = prompt("🔐 Digite o código secreto de administrador:");
-            
-            // Código secreto padrão - ALTERE ESTE NÚMERO!
-            if (secretCode === "202424") {
-                // Aqui você pode adicionar o painel admin
-                alert("✅ Acesso concedido ao painel admin!\n\nEm breve: painel completo para editar o site.");
-                
-                // Opção para editar link de download
-                const newLink = prompt("🔗 Deseja alterar o link de download?\nAtual: https://4br.me/BanaOS11\n\nDigite novo link ou clique Cancelar:");
-                
-                if (newLink && newLink.trim() !== "") {
-                    document.getElementById('downloadButton').href = newLink;
-                    alert("✅ Link de download atualizado!");
+        // ============================================
+        // SISTEMA DO SUPER PAINEL ADMIN
+        // ============================================
+        
+        // Configurações iniciais
+        const ADMIN_CONFIG = {
+            secretCode: "202424", // ⬅️ ALTERE ESTE CÓDIGO!
+            isAdmin: false,
+            siteData: {
+                title: "BanaOS 11 LTSC 25H2",
+                description: "Sistema Windows 11 LTSC super otimizado para PCs de baixo desempenho",
+                downloadLink: "https://4br.me/BanaOS11",
+                imageUrl: "https://static.lumi.new/98/987569d69e9f0c588cd8c699ffb0c6d6.webp",
+                imageAlt: "BanaOS 11 LTSC"
+            },
+            stats: {
+                totalDownloads: 1247,
+                onlineUsers: 42,
+                todayDownloads: 130,
+                thisWeekDownloads: 850,
+                peakUsers: 58,
+                totalVisits: 5248
+            },
+            systems: [
+                {
+                    id: 1,
+                    name: "BanaOS 11 LTSC",
+                    version: "25H2",
+                    arch: "x64",
+                    link: "https://4br.me/BanaOS11",
+                    description: "Sistema otimizado para PCs de baixo desempenho"
                 }
+            ],
+            updates: []
+        };
+        
+        // ============================================
+        // FUNÇÕES DO PAINEL ADMIN
+        // ============================================
+        
+        function showSuperAdmin() {
+            const code = prompt("🔐 SUPER ADMIN PANEL\nDigite o código secreto:");
+            
+            if (code === ADMIN_CONFIG.secretCode) {
+                ADMIN_CONFIG.isAdmin = true;
+                document.getElementById('superAdminPanel').style.display = 'block';
+                loadAdminData();
+                console.log("✅ Super Admin Panel acessado!");
             } else {
                 alert("❌ Código incorreto!");
             }
         }
-
-        // Configurar botão de download
-        document.getElementById('downloadButton').addEventListener('click', function(e) {
-            // Adicionar efeito visual
-            this.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 200);
-            
-            // Abrir em nova aba
-            setTimeout(() => {
-                window.open(this.href, '_blank');
-            }, 300);
-            
-            // Log no console
-            console.log('📥 Download iniciado: BanaOS 11 LTSC 25H2');
-        });
-
-        // Verificar se a imagem carregou corretamente
-        window.addEventListener('load', function() {
-            const img = document.querySelector('.main-image img');
-            img.addEventListener('error', function() {
-                console.log('⚠️ Imagem principal não carregou, usando fallback');
+        
+        function closeSuperAdmin() {
+            document.getElementById('superAdminPanel').style.display = 'none';
+            ADMIN_CONFIG.isAdmin = false;
+        }
+        
+        function showTab(tabId) {
+            // Remover active de todas as tabs
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
             });
             
-            console.log('🚀 Site BanaOS carregado com sucesso!');
-            console.log('🔐 Código admin secreto: 202424 (altere no código)');
-        });
-
-        // Efeito de digitação no título
-        const title = document.querySelector('h1');
-        const originalText = title.textContent;
-        title.textContent = '';
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Ativar tab selecionada
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+        }
         
-        let i = 0;
-        function typeWriter() {
-            if (i < originalText.length) {
-                title.textContent += originalText.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50);
+        function loadAdminData() {
+            // Carregar dados nos campos
+            document.getElementById('adminSiteTitle').value = ADMIN_CONFIG.siteData.title;
+            document.getElementById('adminSiteDesc').value = ADMIN_CONFIG.siteData.description;
+            document.getElementById('adminDownloadLink').value = ADMIN_CONFIG.siteData.downloadLink;
+            document.getElementById('adminImageUrl').value = ADMIN_CONFIG.siteData.imageUrl;
+            document.getElementById('adminImageAlt').value = ADMIN_CONFIG.siteData.imageAlt;
+            
+            // Atualizar preview
+            updatePreview();
+            
+            // Atualizar estatísticas
+            updateAdminStats();
+            
+            // Carregar sistemas
+            loadSystemsList();
+            
+            // Carregar histórico de atualizações
+            loadUpdatesHistory();
+        }
+        
+        function updatePreview() {
+            document.getElementById('previewTitle').textContent = ADMIN_CONFIG.siteData.title;
+            document.getElementById('previewDesc').textContent = ADMIN_CONFIG.siteData.description.substring(0, 50) + "...";
+            document.getElementById('previewImage').textContent = ADMIN_CONFIG.siteData.imageUrl.substring(0, 30) + "...";
+        }
+        
+        function saveSiteContent() {
+            // Salvar alterações
+            ADMIN_CONFIG.siteData.title = document.getElementById('adminSiteTitle').value;
+            ADMIN_CONFIG.siteData.description = document.getElementById('adminSiteDesc').value;
+            ADMIN_CONFIG.siteData.downloadLink = document.getElementById('adminDownloadLink').value;
+            ADMIN_CONFIG.siteData.imageUrl = document.getElementById('adminImageUrl').value;
+            ADMIN_CONFIG.siteData.imageAlt = document.getElementById('adminImageAlt').value;
+            
+            // Atualizar site em tempo real
+            document.getElementById('siteTitle').textContent = ADMIN_CONFIG.siteData.title;
+            document.getElementById('siteDescription').textContent = ADMIN_CONFIG.siteData.description;
+            document.getElementById('downloadButton').href = ADMIN_CONFIG.siteData.downloadLink;
+            document.getElementById('mainImage').src = ADMIN_CONFIG.siteData.imageUrl;
+            document.getElementById('mainImage').alt = ADMIN_CONFIG.siteData.imageAlt;
+            
+            // Salvar no localStorage
+            localStorage.setItem('banaos_admin_data', JSON.stringify(ADMIN_CONFIG));
+            
+            // Feedback
+            alert("✅ Alterações salvas com sucesso!");
+            console.log("💾 Dados do site atualizados:", ADMIN_CONFIG.siteData);
+        }
+        
+        function addNewSystem() {
+            const name = document.getElementById('newSystemName').value;
+            const version = document.getElementById('newSystemVersion').value;
+            const arch = document.getElementById('newSystemArch').value;
+            const link = document.getElementById('newSystemLink').value;
+            const desc = document.getElementById('newSystemDesc').value;
+            
+            if (!name || !version || !link) {
+                alert("❌ Preencha todos os campos obrigatórios!");
+                return;
+            }
+            
+            const newSystem = {
+                id: Date.now(),
+                name: name,
+                version: version,
+                arch: arch,
+                link: link,
+                description: desc
+            };
+            
+            ADMIN_CONFIG.systems.push(newSystem);
+            
+            // Limpar campos
+            document.getElementById('newSystemName').value = '';
+            document.getElementById('newSystemVersion').value = '';
+            document.getElementById('newSystemLink').value = '';
+            document.getElementById('newSystemDesc').value = '';
+            
+            // Atualizar lista
+            loadSystemsList();
+            
+            alert(`✅ Sistema "${name}" adicionado com sucesso!`);
+        }
+        
+        function loadSystemsList() {
+            const container = document.getElementById('systemsList');
+            container.innerHTML = '';
+            
+            ADMIN_CONFIG.systems.forEach(system => {
+                const systemHtml = `
+                    <div class="system-item">
+                        <div class="system-item-header">
+                            <div>
+                                <h4 style="color: #60a5fa;">${system.name}</h4>
+                                <small style="color: #94a3b8;">${system.version} • ${system.arch}</small>
+                            </div>
+                            <div class="system-actions">
+                                <button class="system-btn edit-btn" onclick="editSystem(${system.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="system-btn delete-btn" onclick="deleteSystem(${system.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9rem;">
+                            ${system.description || "Sem descrição"}
+                        </p>
+                    </div>
+                `;
+                
+                container.innerHTML += systemHtml;
+            });
+        }
+        
+        function deleteSystem(systemId) {
+            if (confirm("⚠️ Tem certeza que deseja excluir este sistema?")) {
+                ADMIN_CONFIG.systems = ADMIN_CONFIG.systems.filter(s => s.id !== systemId);
+                loadSystemsList();
+                alert("✅ Sistema excluído!");
             }
         }
         
-        // Iniciar efeito após 1 segundo
-        setTimeout(typeWriter, 1000);
+        function editSystem(systemId) {
+            const system = ADMIN_CONFIG.systems.find(s => s.id === systemId);
+            if (system) {
+                // Aqui você pode implementar a edição
+                alert(`✏️ Editar sistema: ${system.name}\n\nEm breve: editor completo!`);
+            }
+        }
+        
+        function publishUpdate() {
+            const title = document.getElementById('updateTitle').value;
+            const description = document.getElementById('updateDescription').value;
+            const type = document.getElementById('updateType').value;
+            
+            if (!title || !description) {
+                alert("❌ Preencha todos os campos!");
+                return;
+            }
+            
+            const update = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                type: type,
+                date: new Date().toLocaleString('pt-BR'),
+                publishedBy: "Admin"
+            };
+            
+            ADMIN_CONFIG.updates.unshift(update);
+            
+            // Limpar campos
+            document.getElementById('updateTitle').value = '';
+            document.getElementById('updateDescription').value = '';
+            
+            // Atualizar histórico
+            loadUpdatesHistory();
+            
+            alert("✅ Atualização publicada com sucesso!");
+        }
+        
+        function loadUpdatesHistory() {
+            const container = document.getElementById('updatesHistory');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            ADMIN_CONFIG.updates.forEach(update => {
+                const typeColors = {
+                    bugfix: '#ef4444',
+                    feature: '#10b981',
+                    security: '#f59e0b',
+                    optimization: '#8b5cf6'
+                };
+                
+                const updateHtml = `
+                    <div style="padding: 15px; border-bottom: 1px solid #334155; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong style="color: #60a5fa;">${update.title}</strong>
+                            <span style="background: ${typeColors[update.type] || '#475569'}; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem;">
+                                ${update.type}
+                            </span>
+                        </div>
+                        <p style="color: #cbd5e1; margin: 8px 0; font-size: 0.9rem;">${update.description}</p>
+                        <div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.8rem;">
+                            <span>${update.date}</span>
+                            <span>Por: ${update.publishedBy}</span>
+                        </div>
+                    </div>
+                `;
+                
+                container.innerHTML += updateHtml;
+            });
+            
+            if (ADMIN_CONFIG.updates.length === 0) {
+                container.innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 20px;">Nenhuma atualização publicada ainda.</p>';
+            }
+        }
+        
+        function updateAdminStats() {
+            document.getElementById('statsTotalDownloads').textContent = 
+                ADMIN_CONFIG.stats.totalDownloads.toLocaleString();
+            document.getElementById('statsToday').textContent = 
+                ADMIN_CONFIG.stats.todayDownloads;
+            document.getElementById('statsThisWeek').textContent = 
+                ADMIN_CONFIG.stats.thisWeekDownloads;
+            document.getElementById('statsOnline').textContent = 
+                ADMIN_CONFIG.stats.onlineUsers;
+            document.getElementById('statsPeak').textContent = 
+                ADMIN_CONFIG.stats.peakUsers;
+            document.getElementById('statsVisits').textContent = 
+                ADMIN_CONFIG.stats.totalVisits.toLocaleString();
+            
+            document.getElementById('adminOnlineCount').textContent = 
+                ADMIN_CONFIG.stats.onlineUsers;
+            document.getElementById('lastUpdateTime').textContent = 
+                new Date().toLocaleString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        function refreshStats() {
+            // Simular atualização de estatísticas
+            ADMIN_CONFIG.stats.onlineUsers = Math.floor(Math.random() * 20) + 30;
+            ADMIN_CONFIG.stats.todayDownloads += Math.floor(Math.random() * 5);
+            ADMIN_CONFIG.stats.totalDownloads += Math.floor(Math.random() * 3);
+            
+            if (ADMIN_CONFIG.stats.onlineUsers > ADMIN_CONFIG.stats.peakUsers) {
+                ADMIN_CONFIG.stats.peakUsers = ADMIN_CONFIG.stats.onlineUsers;
+            }
+            
+            updateAdminStats();
+            alert("📊 Estatísticas atualizadas!");
+        }
+        
+        function changeSecretCode() {
+            const newCode = document.getElementById('newSecretCode').value;
+            const confirmCode = document.getElementById('confirmSecretCode').value;
+            
+            if (!newCode || !confirmCode) {
+                alert("❌ Preencha ambos os campos!");
+                return;
+            }
+            
+            if (newCode !== confirmCode) {
+                alert("❌ Os códigos não coincidem!");
+                return;
+            }
+            
+            ADMIN_CONFIG.secretCode = newCode;
+            document.getElementById('adminSecretCode').value = newCode;
+            
+            // Limpar campos
+            document.getElementById('newSecretCode').value = '';
+            document.getElementById('confirmSecretCode').value = '';
+            
+            alert("✅ Código secreto alterado com sucesso!\n\nNovo código: " + newCode);
+            console.log("🔐 Novo código secreto:", newCode);
+        }
+        
+        function createBackup() {
+            const backupData = JSON.stringify(ADMIN_CONFIG, null, 2);
+            const blob = new Blob([backupData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `banaos-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            document.getElementById('lastBackup').textContent = new Date().toLocaleString('pt-BR');
+            document.getElementById('dataSize').textContent = `${(backupData.length / 1024).toFixed(1)} KB`;
+            
+            alert("✅ Backup criado com sucesso!");
+        }
+        
+        function restoreBackup() {
+            alert("🔧 Função de restauração em desenvolvimento!\n\nPor enquanto, use o painel para configurar manualmente.");
+        }
+        
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar dados salvos
+            const savedData = localStorage.getItem('banaos_admin_data');
+            if (savedData) {
+                const parsed = JSON.parse(savedData);
+                Object.assign(ADMIN_CONFIG, parsed);
+                
+                // Atualizar site com dados salvos
+                document.getElementById('siteTitle').textContent = ADMIN_CONFIG.siteData.title;
+                document.getElementById('siteDescription').textContent = ADMIN_CONFIG.siteData.description;
+                document.getElementById('downloadButton').href = ADMIN_CONFIG.siteData.downloadLink;
+                document.getElementById('mainImage').src = ADMIN_CONFIG.siteData.imageUrl;
+                document.getElementById('mainImage').alt = ADMIN_CONFIG.siteData.imageAlt;
+            }
+            
+            // Configurar sistema de tabs
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    showTab(tabId);
+                });
+            });
+            
+            // Atualizar preview em tempo real
+            ['adminSiteTitle', 'adminSiteDesc', 'adminImageUrl'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', updatePreview);
+                }
+            });
+            
+            // Configurar botão de download
+            document.getElementById('downloadButton').addEventListener('click', function(e) {
+                ADMIN_CONFIG.stats.totalDownloads++;
+                ADMIN_CONFIG.stats.todayDownloads++;
+                
+                // Log
+                console.log('📥 Download contabilizado:', ADMIN_CONFIG.stats.totalDownloads);
+            });
+            
+            // Simular estatísticas em tempo real
+            setInterval(() => {
+                const change = Math.floor(Math.random() * 5) - 2;
+                ADMIN_CONFIG.stats.onlineUsers = Math.max(20, ADMIN_CONFIG.stats.onlineUsers + change);
+                
+                if (ADMIN_CONFIG.isAdmin) {
+                    updateAdminStats();
+                }
+            }, 10000);
+            
+            console.log('🚀 Site BanaOS carregado!');
+            console.log('👑 Super Admin Panel disponível');
+            console.log('🔐 Código secreto:', ADMIN_CONFIG.secretCode);
+            console.log('💡 Pressione Ctrl+Shift+S para abrir painel');
+            
+            // Atalho de teclado
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+                    e.preventDefault();
+                    showSuperAdmin();
+                }
+                
+                if (e.key === 'Escape' && ADMIN_CONFIG.isAdmin) {
+                    closeSuperAdmin();
+                }
+            });
+        });
     </script>
 </body>
 </html>
