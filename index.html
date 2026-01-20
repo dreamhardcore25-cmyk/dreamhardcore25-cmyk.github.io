@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download BanaOS 11 LTSC 25H2</title>
+    <title>BanaOS 11 LTSC | Download Gratuito</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         * {
             margin: 0;
@@ -21,6 +25,151 @@
             line-height: 1.6;
         }
         
+        /* LOGIN SECRETO (ESCONDIDO) */
+        .secret-login {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(20px);
+        }
+        
+        .secret-box {
+            background: linear-gradient(145deg, #0f172a, #1e293b);
+            padding: 50px;
+            border-radius: 25px;
+            border: 3px solid #00ff88;
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.3);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            animation: secretAppear 0.5s ease;
+        }
+        
+        @keyframes secretAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .secret-logo {
+            font-size: 4rem;
+            color: #00ff88;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px #00ff88;
+        }
+        
+        .secret-title {
+            color: #60a5fa;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .secret-input {
+            width: 100%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #3b82f6;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 3px;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .secret-input:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
+            transform: scale(1.02);
+        }
+        
+        .secret-btn {
+            background: linear-gradient(45deg, #00ff88, #10b981);
+            color: #0f172a;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .secret-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.5);
+        }
+        
+        .secret-hint {
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        /* PAINEL ADMIN (ESCONDIDO) */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.98);
+            z-index: 10001;
+            display: none;
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            background: linear-gradient(45deg, #1e293b, #0f172a);
+            padding: 25px;
+            border-bottom: 3px solid #00ff88;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        
+        .admin-close {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .admin-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        /* SITE PRINCIPAL (VISÍVEL PARA TODOS) */
         .container {
             max-width: 900px;
             margin: 40px auto;
@@ -44,83 +193,44 @@
             background: linear-gradient(45deg, #60a5fa, #3b82f6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
         }
         
-        .subtitle {
-            color: #94a3b8;
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .iso-card {
-            background: linear-gradient(145deg, rgba(51, 65, 85, 0.8), rgba(30, 41, 59, 0.9));
-            border-radius: 20px;
-            padding: 35px;
-            margin: 35px 0;
-            border: 1px solid rgba(100, 116, 139, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .iso-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .iso-title {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
-        }
-        
-        .windows-icon {
-            color: #60a5fa;
-            font-size: 2.5rem;
-        }
-        
-        .iso-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #f1f5f9;
-        }
-        
-        .info-grid {
+        .live-stats-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            margin: 25px 0;
+            margin: 40px 0;
         }
         
-        .info-item {
-            background: rgba(15, 23, 42, 0.6);
-            padding: 18px;
-            border-radius: 12px;
-            border-left: 4px solid #3b82f6;
-        }
-        
-        .info-label {
-            color: #93c5fd;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .info-value {
-            color: #e2e8f0;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-        
-        .download-section {
+        .live-stat-card {
+            background: linear-gradient(145deg, rgba(37, 99, 235, 0.2), rgba(59, 130, 246, 0.1));
+            border-radius: 20px;
+            padding: 30px;
             text-align: center;
-            margin: 50px 0 30px;
+            border: 2px solid #3b82f6;
+            transition: all 0.3s;
+        }
+        
+        .live-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .live-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .live-label {
+            color: #93c5fd;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .download-btn {
@@ -130,84 +240,34 @@
             gap: 15px;
             background: linear-gradient(45deg, #2563eb, #3b82f6);
             color: white;
-            padding: 22px 50px;
-            font-size: 1.4rem;
+            padding: 25px 60px;
+            font-size: 1.5rem;
             font-weight: 700;
             text-decoration: none;
-            border-radius: 16px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
-            min-width: 300px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.5);
+            margin: 30px 0;
         }
         
         .download-btn:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.7);
-            background: linear-gradient(45deg, #1d4ed8, #2563eb);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.7);
         }
         
-        .download-btn:active {
-            transform: translateY(-2px);
-        }
-        
-        .file-size {
-            display: block;
-            margin-top: 15px;
-            color: #94a3b8;
-            font-size: 1rem;
-        }
-        
-        .warning-box {
+        .system-info {
             background: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.3);
             border-radius: 15px;
             padding: 25px;
             margin: 30px 0;
-            color: #fbbf24;
         }
         
-        .warning-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
+        .system-info h3 {
             color: #f59e0b;
-            font-weight: 700;
-        }
-        
-        .features {
-            margin: 40px 0;
-            padding: 25px;
-            background: rgba(51, 65, 85, 0.4);
-            border-radius: 15px;
-        }
-        
-        .features h3 {
-            color: #60a5fa;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-        
-        .features-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            list-style: none;
-        }
-        
-        .features-list li {
-            padding: 12px;
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: 8px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-        
-        .features-list i {
-            color: #10b981;
         }
         
         footer {
@@ -216,180 +276,641 @@
             padding-top: 30px;
             border-top: 1px solid rgba(100, 116, 139, 0.2);
             color: #94a3b8;
-            font-size: 0.9rem;
         }
         
-        .hash {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 10px;
+        /* BOTÃO SECRETO (ESCONDIDO) */
+        .secret-trigger {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(0, 255, 136, 0.5);
+            font-size: 1.2rem;
+            opacity: 0.3;
+            transition: all 0.3s;
+        }
+        
+        .secret-trigger:hover {
+            opacity: 1;
+            background: rgba(0, 255, 136, 0.2);
+            border-color: rgba(0, 255, 136, 0.6);
+            transform: scale(1.1);
+        }
+        
+        /* ADMIN CONTROLES */
+        .admin-controls {
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 15px;
+            padding: 30px;
             margin: 20px 0;
-            font-family: monospace;
-            word-break: break-all;
-            font-size: 0.9rem;
-            color: #cbd5e1;
+            border: 2px solid #3b82f6;
+        }
+        
+        .admin-controls h3 {
+            color: #60a5fa;
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group label {
+            display: block;
+            color: #93c5fd;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .control-group input,
+        .control-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #475569;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .control-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .save-btn {
+            background: linear-gradient(45deg, #10b981, #34d399);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
         }
         
         @media (max-width: 768px) {
             .container {
                 padding: 30px 20px;
-                margin: 20px auto;
             }
             
             h1 {
                 font-size: 2.2rem;
             }
             
-            .download-btn {
-                padding: 18px 30px;
-                font-size: 1.2rem;
-                min-width: auto;
-                width: 100%;
+            .live-number {
+                font-size: 2.5rem;
             }
             
-            .info-grid {
-                grid-template-columns: 1fr;
+            .download-btn {
+                width: 100%;
+                padding: 20px;
+                font-size: 1.2rem;
+            }
+            
+            .secret-box {
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- LOGIN SECRETO (ESCONDIDO) -->
+    <div class="secret-login" id="secretLogin">
+        <div class="secret-box">
+            <div class="secret-logo">
+                <i class="fas fa-user-secret"></i>
+            </div>
+            <h2 class="secret-title">ACESSO RESTRITO</h2>
+            <p style="color: #94a3b8; margin-bottom: 20px;">
+                Digite o código secreto para acessar o painel de controle
+            </p>
+            
+            <input type="password" class="secret-input" id="secretCode" 
+                   placeholder="••••••" maxlength="6" autocomplete="off">
+            
+            <button class="secret-btn" onclick="checkSecretCode()">
+                <i class="fas fa-unlock"></i> ACESSAR PAINEL ADMIN
+            </button>
+            
+            <p class="secret-hint">
+                <i class="fas fa-info-circle"></i> Aperte ESC para cancelar
+            </p>
+        </div>
+    </div>
+    
+    <!-- PAINEL ADMIN (ESCONDIDO) -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2 style="color: #60a5fa;">
+                <i class="fas fa-cog"></i> Painel de Controle - BanaOS
+            </h2>
+            <button class="admin-close" onclick="closeAdminPanel()">
+                <i class="fas fa-times"></i> Fechar Painel
+            </button>
+        </div>
+        
+        <div class="admin-content">
+            <h2 style="color: #00ff88; text-align: center; margin-bottom: 30px;">
+                <i class="fas fa-shield-alt"></i> Controle Total do Sistema
+            </h2>
+            
+            <div class="admin-controls">
+                <h3><i class="fas fa-edit"></i> Editar Conteúdo do Site</h3>
+                
+                <div class="control-group">
+                    <label>Título Principal:</label>
+                    <input type="text" id="editTitle" value="BanaOS 11 LTSC 25H2">
+                </div>
+                
+                <div class="control-group">
+                    <label>Descrição:</label>
+                    <textarea id="editDescription">Sistema Windows 11 LTSC otimizado para PCs de baixo desempenho. Testado em Pentium 4 com 1.5GB RAM.</textarea>
+                </div>
+                
+                <div class="control-group">
+                    <label>Link de Download:</label>
+                    <input type="url" id="editDownloadLink" value="https://4br.me/BanaOS11">
+                </div>
+                
+                <div class="control-group">
+                    <label>Informações do Sistema:</label>
+                    <textarea id="editSystemInfo">• Hardware: Intel Pentium 4 | 1.5GB RAM
+• Games Testados: Roblox: 40-50 FPS | Minecraft: 70-80 FPS | Valorant: 45-50 FPS
+• Recursos: Pós-install com navegador e antivírus | Super otimizado para hardware antigo</textarea>
+                </div>
+                
+                <button class="save-btn" onclick="saveChanges()">
+                    <i class="fas fa-save"></i> Salvar Alterações
+                </button>
+            </div>
+            
+            <div class="admin-controls">
+                <h3><i class="fas fa-chart-bar"></i> Estatísticas</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                    <div style="background: rgba(37, 99, 235, 0.2); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 2rem; color: #00ff88; font-weight: bold;" id="adminTotalDownloads">1,247</div>
+                        <div style="color: #93c5fd;">Downloads Totais</div>
+                    </div>
+                    <div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 2rem; color: #00ff88; font-weight: bold;" id="adminOnlineNow">42</div>
+                        <div style="color: #93c5fd">Online Agora</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-controls">
+                <h3><i class="fas fa-sync-alt"></i> Publicar Atualização</h3>
+                <div class="control-group">
+                    <label>Versão da Atualização:</label>
+                    <input type="text" id="updateVersion" placeholder="Ex: V1.1">
+                </div>
+                
+                <div class="control-group">
+                    <label>Mensagem da Atualização:</label>
+                    <textarea id="updateMessage" placeholder="Descreva as melhorias..."></textarea>
+                </div>
+                
+                <button class="save-btn" style="background: linear-gradient(45deg, #f59e0b, #fbbf24);" onclick="publishUpdate()">
+                    <i class="fas fa-paper-plane"></i> Publicar Atualização
+                </button>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; color: #64748b; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> Painel de administração secreto - Apenas usuários autorizados
+            </div>
+        </div>
+    </div>
+    
+    <!-- BOTÃO SECRETO (ESCONDIDO NO CANTO) -->
+    <div class="secret-trigger" onclick="showSecretLogin()" title="Acesso Admin (Ctrl+Shift+A)">
+        <i class="fas fa-terminal"></i>
+    </div>
+    
+    <!-- SITE PRINCIPAL (VISÍVEL PARA TODOS) -->
     <div class="container">
         <header>
-            <h1>BanaOS 11 LTSC 25H2</h1>
-            <p class="subtitle">Download direto da ISO otimizada do Windows 11 LTSC - Versão V1.0 x64</p>
+            <h1 id="siteTitle">BanaOS 11 LTSC 25H2</h1>
+            <p class="subtitle" id="siteDescription">Sistema Windows 11 LTSC otimizado para PCs de baixo desempenho</p>
         </header>
         
-        <div class="iso-card">
-            <div class="iso-title">
-                <i class="fab fa-windows windows-icon"></i>
-                <div class="iso-name">BanaOS 11 LTSC 25H2 V1.0 x64.iso</div>
-            </div>
-            
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-label"><i class="fas fa-desktop"></i> Sistema Operacional</div>
-                    <div class="info-value">Windows 11 LTSC</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label"><i class="fas fa-code-branch"></i> Versão</div>
-                    <div class="info-value">25H2 V1.0</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label"><i class="fas fa-microchip"></i> Arquitetura</div>
-                    <div class="info-value">64-bit (x64)</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label"><i class="fas fa-hdd"></i> Tipo</div>
-                    <div class="info-value">ISO Bootável</div>
+        <div class="live-stats-container">
+            <div class="live-stat-card">
+                <div class="live-label">Downloads Totais</div>
+                <div class="live-number" id="totalDownloads">1,247</div>
+                <div class="live-subtext">
+                    <i class="fas fa-sync-alt fa-spin"></i> Atualizando em tempo real
                 </div>
             </div>
             
-            <div class="features">
-                <h3><i class="fas fa-star"></i> Características Principais</h3>
-                <ul class="features-list">
-                    <li><i class="fas fa-check"></i> Windows 11 LTSC otimizado</li>
-                    <li><i class="fas fa-check"></i> Atualizações de longo prazo</li>
-                    <li><i class="fas fa-check"></i> Sistema limpo e estável</li>
-                    <li><i class="fas fa-check"></i> Pronto para instalação</li>
-                    <li><i class="fas fa-check"></i> Compatível com UEFI/LEGACY</li>
-                    <li><i class="fas fa-check"></i> Drivers básicos incluídos</li>
-                </ul>
+            <div class="live-stat-card">
+                <div class="live-label">Online Agora</div>
+                <div class="live-number" id="onlineNow">42</div>
+                <div class="live-subtext">
+                    Pico: <span id="peakOnline">58</span> usuários
+                </div>
+            </div>
+            
+            <div class="live-stat-card">
+                <div class="live-label">Downloads Hoje</div>
+                <div class="live-number" id="todayDownloads">127</div>
+                <div class="live-subtext">
+                    <span id="downloadsHour">15</span> na última hora
+                </div>
             </div>
         </div>
         
-        <div class="warning-box">
-            <div class="warning-title">
-                <i class="fas fa-exclamation-triangle"></i>
-                <h3>Importante - Leia antes de baixar</h3>
-            </div>
-            <p>1. Esta ISO é uma versão modificada do Windows 11 LTSC. Está funcionando Perfeitamente.</p>
-            <p>2. Windows Não vem com navegador e so ir no pos-install.</p>
-            <p>3. Dentro Da Pos-install tem Antivirus.</p>
-            <p>4. Super Otimizado para Pc Fraco.</p>
-            <p>      SISTEMA TESTADO</p>
-            <p>Processador: Intel Pentium 4.</p>
-            <p>Memoria: 1.5 de ram.</p>
-            <p>Games Testados</p>
-            <p>Roblox fps 40 a 50.</p>
-            <p>Minecraft fps 70 a 80.</p>
-            <p>"Valorant fps 45 a 50".</p>
-        </div>
-        
-        <div class="download-section">
-            <a href="https://4br.me/BanaOS11" class="download-btn" id="downloadButton">
-                <i class="fas fa-download icon"></i>
-                BAIXAR AGORA
+        <div style="text-align: center; margin: 40px 0;">
+            <a href="https://4br.me/BanaOS11" class="download-btn" id="downloadLink" target="_blank">
+                <i class="fas fa-download"></i> BAIXAR AGORA - BanaOS 11 LTSC
             </a>
-            <span class="file-size">Tamanho aproximado: ~3.5 GB</span>
-            
-            <div style="margin-top: 30px;">
-                <div style="color: #94a3b8; margin-bottom: 10px;">
-                    <i class="fas fa-fingerprint"></i> Verificação de integridade recomendada:
-                </div>
-                <div class="hash">
-                    Após o download, verifique o hash SHA-256 do arquivo para garantir que não foi corrompido
-                </div>
+            <p style="margin-top: 15px; color: #94a3b8;">
+                <i class="fas fa-bolt"></i> Tamanho: ~3.5 GB | 
+                <i class="fas fa-users"></i> <span id="currentDownloaders">12</span> pessoas baixando agora
+            </p>
+        </div>
+        
+        <div class="system-info">
+            <h3>
+                <i class="fas fa-exclamation-triangle"></i> Informações do Sistema
+            </h3>
+            <div id="systemInfo">
+                <p><strong>Hardware:</strong> Intel Pentium 4 | 1.5GB RAM</p>
+                <p><strong>Games Testados:</strong> Roblox: 40-50 FPS | Minecraft: 70-80 FPS | Valorant: 45-50 FPS</p>
+                <p><strong>Recursos:</strong> Pós-install com navegador e antivírus | Super otimizado para hardware antigo</p>
+            </div>
+        </div>
+        
+        <div class="system-info" style="background: rgba(59, 130, 246, 0.1);">
+            <h3>
+                <i class="fas fa-star"></i> Por que escolher BanaOS?
+            </h3>
+            <div id="whyChoose">
+                <p>✅ <strong>Otimização extrema</strong> para hardware antigo</p>
+                <p>✅ <strong>Windows 11 LTSC</strong> - versão estável e de longo prazo</p>
+                <p>✅ <strong>Testado em PC fraco</strong> - Pentium 4 com 1.5GB RAM</p>
+                <p>✅ <strong>Pronto para usar</strong> - drivers e programas essenciais incluídos</p>
+                <p>✅ <strong>Segurança</strong> - antivírus e firewall configurados</p>
+                <p>✅ <strong>Suporte a jogos</strong> - performance otimizada para gaming</p>
             </div>
         </div>
         
         <footer>
-            <p>© 2024 BanaOS Downloads - Para fins de teste e avaliação</p>
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #64748b;">
-                Este site fornece apenas o link de download direto. Todo o conteúdo é propriedade de seus respectivos criadores.
+            <p>© 2024 BanaOS Downloads - Todos os direitos reservados</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; color: #64748b;">
+                Sistema otimizado para melhor performance | Download 100% gratuito
             </p>
         </footer>
     </div>
 
     <script>
-        // Contador de downloads (simulado)
-        let downloadCount = 1247;
+        // ============================================
+        // CONFIGURAÇÃO DO SISTEMA SECRETO
+        // ============================================
         
-        // Atualizar contador na inicialização
-        document.addEventListener('DOMContentLoaded', function() {
-            const downloadBtn = document.getElementById('downloadButton');
-            const originalText = downloadBtn.innerHTML;
+        // CONFIGURE AQUI O CÓDIGO SECRETO PARA ACESSAR O PAINEL
+        const SECRET_CONFIG = {
+            code: '202424', // ⬅️ ALTERE ESTE CÓDIGO!
+            attempts: 0,
+            maxAttempts: 3,
+            isAdmin: false
+        };
+        
+        // ============================================
+        // DADOS DO SITE (PODE SER EDITADO NO PAINEL)
+        // ============================================
+        
+        let siteData = {
+            title: 'BanaOS 11 LTSC 25H2',
+            description: 'Sistema Windows 11 LTSC otimizado para PCs de baixo desempenho',
+            downloadLink: 'https://4br.me/BanaOS11',
+            systemInfo: `• Hardware: Intel Pentium 4 | 1.5GB RAM
+• Games Testados: Roblox: 40-50 FPS | Minecraft: 70-80 FPS | Valorant: 45-50 FPS
+• Recursos: Pós-install com navegador e antivírus | Super otimizado para hardware antigo`,
+            whyChoose: `✅ <strong>Otimização extrema</strong> para hardware antigo
+✅ <strong>Windows 11 LTSC</strong> - versão estável e de longo prazo
+✅ <strong>Testado em PC fraco</strong> - Pentium 4 com 1.5GB RAM
+✅ <strong>Pronto para usar</strong> - drivers e programas essenciais incluídos
+✅ <strong>Segurança</strong> - antivírus e firewall configurados
+✅ <strong>Suporte a jogos</strong> - performance otimizada para gaming`,
+            stats: {
+                totalDownloads: 1247,
+                onlineNow: 42,
+                todayDownloads: 127,
+                downloadsThisHour: 15,
+                peakOnline: 58,
+                currentDownloaders: 12
+            }
+        };
+        
+        // ============================================
+        // FUNÇÕES DO SISTEMA SECRETO
+        // ============================================
+        
+        function showSecretLogin() {
+            document.getElementById('secretLogin').style.display = 'flex';
+            document.getElementById('secretCode').focus();
+        }
+        
+        function hideSecretLogin() {
+            document.getElementById('secretLogin').style.display = 'none';
+            document.getElementById('secretCode').value = '';
+        }
+        
+        function checkSecretCode() {
+            const inputCode = document.getElementById('secretCode').value;
             
-            // Adicionar contador ao botão
-            const countSpan = document.createElement('span');
-            countSpan.style.fontSize = '0.8rem';
-            countSpan.style.marginLeft = '10px';
-            countSpan.style.opacity = '0.8';
-            countSpan.textContent = `(${downloadCount.toLocaleString()} downloads)`;
-            downloadBtn.appendChild(countSpan);
-            
-            // Animação ao clicar no botão
-            downloadBtn.addEventListener('click', function(e) {
-                // Incrementar contador
-                downloadCount++;
-                countSpan.textContent = `(${downloadCount.toLocaleString()} downloads)`;
+            if (inputCode === SECRET_CONFIG.code) {
+                // Código correto - Acessar painel admin
+                SECRET_CONFIG.isAdmin = true;
+                hideSecretLogin();
+                showAdminPanel();
                 
-                // Adicionar efeito visual
-                this.style.transform = 'scale(0.98)';
+                // Carregar dados no painel
+                loadAdminData();
+                
+                console.log('✅ Painel admin acessado com sucesso!');
+                
+            } else {
+                // Código errado
+                SECRET_CONFIG.attempts++;
+                
+                // Efeito visual de erro
+                const input = document.getElementById('secretCode');
+                input.style.borderColor = '#ef4444';
+                input.style.boxShadow = '0 0 20px rgba(239, 68, 68, 0.5)';
+                input.value = '';
+                
                 setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
+                    input.style.borderColor = '#3b82f6';
+                    input.style.boxShadow = 'none';
+                }, 1000);
                 
-                // Log de download (simulado)
-                console.log('Download iniciado: BanaOS 11 LTSC 25H2 V1.0 x64.iso');
-            });
-            
-            // Efeito de digitação no título
-            const title = document.querySelector('h1');
-            const text = title.textContent;
-            title.textContent = '';
-            
-            let i = 0;
-            function typeWriter() {
-                if (i < text.length) {
-                    title.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 50);
+                // Verificar tentativas máximas
+                if (SECRET_CONFIG.attempts >= SECRET_CONFIG.maxAttempts) {
+                    alert('❌ Muitas tentativas erradas! Tente novamente mais tarde.');
+                    hideSecretLogin();
+                    SECRET_CONFIG.attempts = 0;
                 }
             }
+        }
+        
+        function showAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'block';
+        }
+        
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+            SECRET_CONFIG.isAdmin = false;
+            console.log('🔒 Painel admin fechado');
+        }
+        
+        // ============================================
+        // FUNÇÕES DO PAINEL ADMIN
+        // ============================================
+        
+        function loadAdminData() {
+            // Carregar dados atuais nos campos de edição
+            document.getElementById('editTitle').value = siteData.title;
+            document.getElementById('editDescription').value = siteData.description;
+            document.getElementById('editDownloadLink').value = siteData.downloadLink;
+            document.getElementById('editSystemInfo').value = siteData.systemInfo;
             
-            // Iniciar efeito após um breve delay
-            setTimeout(typeWriter, 500);
+            // Atualizar estatísticas no painel
+            document.getElementById('adminTotalDownloads').textContent = 
+                siteData.stats.totalDownloads.toLocaleString();
+            document.getElementById('adminOnlineNow').textContent = 
+                siteData.stats.onlineNow;
+        }
+        
+        function saveChanges() {
+            // Salvar alterações
+            siteData.title = document.getElementById('editTitle').value;
+            siteData.description = document.getElementById('editDescription').value;
+            siteData.downloadLink = document.getElementById('editDownloadLink').value;
+            siteData.systemInfo = document.getElementById('editSystemInfo').value;
+            
+            // Atualizar site em tempo real
+            updateSiteContent();
+            
+            // Salvar no localStorage
+            localStorage.setItem('banaos_site_data', JSON.stringify(siteData));
+            
+            // Feedback visual
+            const saveBtn = document.querySelector('.save-btn');
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fas fa-check"></i> Alterações salvas!';
+            saveBtn.style.background = 'linear-gradient(45deg, #10b981, #34d399)';
+            
+            setTimeout(() => {
+                saveBtn.innerHTML = originalText;
+                saveBtn.style.background = 'linear-gradient(45deg, #10b981, #34d399)';
+            }, 2000);
+            
+            console.log('💾 Alterações salvas:', siteData);
+        }
+        
+        function publishUpdate() {
+            const version = document.getElementById('updateVersion').value;
+            const message = document.getElementById('updateMessage').value;
+            
+            if (!version || !message) {
+                alert('❌ Preencha todos os campos da atualização!');
+                return;
+            }
+            
+            // Adicionar ao sistema info
+            siteData.systemInfo += `\n\n🔔 ATUALIZAÇÃO ${version}:\n${message}`;
+            
+            // Atualizar site
+            updateSiteContent();
+            
+            // Limpar campos
+            document.getElementById('updateVersion').value = '';
+            document.getElementById('updateMessage').value = '';
+            
+            // Feedback
+            alert(`✅ Atualização ${version} publicada com sucesso!`);
+            console.log(`📢 Atualização publicada: ${version}`);
+        }
+        
+        // ============================================
+        // FUNÇÕES DO SITE PRINCIPAL
+        // ============================================
+        
+        function updateSiteContent() {
+            // Atualizar título e descrição
+            document.getElementById('siteTitle').textContent = siteData.title;
+            document.getElementById('siteDescription').textContent = siteData.description;
+            
+            // Atualizar link de download
+            document.getElementById('downloadLink').href = siteData.downloadLink;
+            
+            // Atualizar informações do sistema
+            const systemInfoHtml = siteData.systemInfo
+                .split('\n')
+                .map(line => {
+                    if (line.includes('🔔 ATUALIZAÇÃO')) {
+                        return `<div style="background: rgba(59, 130, 246, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #3b82f6;">${line}</div>`;
+                    } else if (line.trim().startsWith('•')) {
+                        return `<p>${line}</p>`;
+                    } else {
+                        return `<p>${line}</p>`;
+                    }
+                })
+                .join('');
+            
+            document.getElementById('systemInfo').innerHTML = systemInfoHtml;
+            
+            // Atualizar estatísticas
+            updateStatsDisplay();
+        }
+        
+        function updateStatsDisplay() {
+            // Atualizar números no site
+            document.getElementById('totalDownloads').textContent = 
+                siteData.stats.totalDownloads.toLocaleString();
+            document.getElementById('onlineNow').textContent = 
+                siteData.stats.onlineNow;
+            document.getElementById('todayDownloads').textContent = 
+                siteData.stats.todayDownloads;
+            document.getElementById('downloadsHour').textContent = 
+                siteData.stats.downloadsThisHour;
+            document.getElementById('peakOnline').textContent = 
+                siteData.stats.peakOnline;
+            document.getElementById('currentDownloaders').textContent = 
+                siteData.stats.currentDownloaders;
+        }
+        
+        function simulateActivity() {
+            // Simular atividade em tempo real
+            setInterval(() => {
+                // Chance de novo download
+                if (Math.random() > 0.7) {
+                    siteData.stats.totalDownloads++;
+                    siteData.stats.todayDownloads++;
+                    siteData.stats.downloadsThisHour++;
+                }
+                
+                // Variação de usuários online
+                const onlineChange = Math.floor(Math.random() * 5) - 2;
+                siteData.stats.onlineNow = Math.max(10, siteData.stats.onlineNow + onlineChange);
+                
+                if (siteData.stats.onlineNow > siteData.stats.peakOnline) {
+                    siteData.stats.peakOnline = siteData.stats.onlineNow;
+                }
+                
+                // Atualizar display
+                updateStatsDisplay();
+                
+                // Atualizar painel admin se estiver aberto
+                if (SECRET_CONFIG.isAdmin) {
+                    loadAdminData();
+                }
+                
+            }, 3000); // Atualizar a cada 3 segundos
+        }
+        
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar dados salvos
+            const savedData = localStorage.getItem('banaos_site_data');
+            if (savedData) {
+                siteData = JSON.parse(savedData);
+            }
+            
+            // Atualizar conteúdo do site
+            updateSiteContent();
+            
+            // Iniciar simulação de atividade
+            simulateActivity();
+            
+            // Configurar botão de download
+            document.getElementById('downloadLink').addEventListener('click', function(e) {
+                // Incrementar contadores
+                siteData.stats.totalDownloads++;
+                siteData.stats.todayDownloads++;
+                siteData.stats.downloadsThisHour++;
+                siteData.stats.currentDownloaders++;
+                
+                updateStatsDisplay();
+                
+                // Abrir em nova aba
+                setTimeout(() => {
+                    window.open(this.href, '_blank');
+                }, 300);
+            });
+            
+            // Configurar teclas de atalho
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+Shift+A para abrir login secreto
+                if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                    e.preventDefault();
+                    showSecretLogin();
+                }
+                
+                // ESC para fechar modais
+                if (e.key === 'Escape') {
+                    if (document.getElementById('secretLogin').style.display === 'flex') {
+                        hideSecretLogin();
+                    }
+                    if (SECRET_CONFIG.isAdmin) {
+                        closeAdminPanel();
+                    }
+                }
+                
+                // Enter no campo de código secreto
+                if (e.key === 'Enter' && document.getElementById('secretLogin').style.display === 'flex') {
+                    checkSecretCode();
+                }
+            });
+            
+            // Log inicial
+            console.log('🚀 Site BanaOS carregado com sucesso!');
+            console.log('🔐 Painel admin secreto disponível (Ctrl+Shift+A)');
+            console.log(`📝 Código secreto atual: ${SECRET_CONFIG.code}`);
+            
+            // Mostrar instruções no console
+            setTimeout(() => {
+                console.log(`
+                📋 INSTRUÇÕES DO SISTEMA:
+                
+                1. PARA ACESSAR O PAINEL ADMIN:
+                   • Clique no ícone no canto inferior direito
+                   • OU pressione Ctrl+Shift+A
+                   • Digite o código secreto: ${SECRET_CONFIG.code}
+                
+                2. PARA MUDAR O CÓDIGO SECRETO:
+                   • No código HTML, procure por:
+                     const SECRET_CONFIG = {
+                         code: '202424', // ⬅️ Altere este número!
+                         ...
+                     }
+                
+                3. AS ALTERAÇÕES SÃO SALVAS automaticamente no navegador
+                
+                4. O PAINEL É TOTALMENTE ESCONDIDO dos usuários normais
+                `);
+            }, 2000);
         });
     </script>
 </body>
