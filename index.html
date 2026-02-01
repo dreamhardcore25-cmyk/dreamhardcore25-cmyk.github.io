@@ -11,6 +11,184 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- SISTEMA DE SEGURANÇA AVANÇADA -->
+    <script>
+        // ========= SISTEMA DE SEGURANÇA AVANÇADA =========
+        
+        // 1. Detectar tentativas de inspeção
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showSecurityAlert('⚠️ Inspeção bloqueada');
+        });
+
+        // 2. Bloquear teclas de desenvolvedor (F12, Ctrl+Shift+I, etc.)
+        document.addEventListener('keydown', function(e) {
+            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            if (
+                e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+                (e.ctrlKey && e.key === 'U') ||
+                (e.keyCode === 123)
+            ) {
+                e.preventDefault();
+                showSecurityAlert('🔒 Acesso ao código-fonte bloqueado');
+                // Redirecionamento aleatório para confundir
+                setTimeout(() => {
+                    window.location.hash = Math.random().toString(36);
+                }, 100);
+                return false;
+            }
+        });
+
+        // 3. Detectar tentativas de copiar o código fonte
+        let copyAttempts = 0;
+        document.addEventListener('copy', function(e) {
+            if (copyAttempts > 2) {
+                e.preventDefault();
+                // Substitui o conteúdo copiado por texto criptografado
+                const fakeData = 'SEC_dGhpcyBjb2RlIGlzIHByb3RlY3RlZA==_LOCK';
+                e.clipboardData.setData('text/plain', fakeData);
+                e.clipboardData.setData('text/html', '<span style="color:red;">⚠️ Conteúdo protegido</span>');
+                showSecurityAlert('📋 Código criptografado ao copiar');
+                copyAttempts++;
+            } else {
+                copyAttempts++;
+            }
+        });
+
+        // 4. Ofuscação de código em tempo real
+        function obfuscateElements() {
+            // Ofusca textos importantes
+            const elements = document.querySelectorAll('.main-title, .work-title, .section-title, h1, h2, h3');
+            elements.forEach(el => {
+                const original = el.innerHTML;
+                el.setAttribute('data-original', btoa(original));
+                // Adiciona proteção contra scraping
+                el.style.userSelect = 'none';
+                el.style.webkitUserSelect = 'none';
+            });
+        }
+
+        // 5. Alertas de segurança
+        function showSecurityAlert(message) {
+            const alert = document.createElement('div');
+            alert.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #ff416c, #ff4b2b);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                z-index: 99999;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 14px;
+                box-shadow: 0 0 20px rgba(255, 65, 108, 0.5);
+                animation: slideIn 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            `;
+            alert.innerHTML = `<i class="fas fa-shield-alt"></i> ${message}`;
+            
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => alert.remove(), 300);
+            }, 3000);
+        }
+
+        // 6. Proteção contra bots/scrapers
+        const securityCheck = {
+            isHuman: true,
+            validate: function() {
+                // Verifica se não está em iframe
+                if (window.self !== window.top) {
+                    this.isHuman = false;
+                    document.body.innerHTML = '<h1 style="text-align:center;color:red;">⚠️ ACESSO NÃO AUTORIZADO</h1>';
+                }
+                
+                // Verifica tempo de carregamento (bots são muito rápidos)
+                const loadTime = performance.now();
+                if (loadTime < 100) { // Menos de 100ms é suspeito
+                    this.isHuman = false;
+                }
+            }
+        };
+
+        // Executar quando a página carregar
+        window.addEventListener('load', function() {
+            securityCheck.validate();
+            obfuscateElements();
+            
+            // Adiciona proteção extra aos comentários
+            protectComments();
+        });
+
+        // 7. Proteção dos comentários
+        function protectComments() {
+            const commentForm = document.querySelector('.comments-form');
+            if (commentForm) {
+                commentForm.addEventListener('submit', function(e) {
+                    // Adiciona timestamp e hash de segurança
+                    const timestamp = Date.now();
+                    const securityHash = btoa(`SEC_${timestamp}_${navigator.userAgent.slice(0,50)}`);
+                    
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'security_hash';
+                    hiddenInput.value = securityHash;
+                    
+                    this.appendChild(hiddenInput);
+                });
+            }
+        }
+
+        // 8. Criptografia dos dados no localStorage
+        const secureStorage = {
+            set: function(key, value) {
+                const encrypted = btoa(JSON.stringify({
+                    data: value,
+                    timestamp: Date.now(),
+                    checksum: this.createChecksum(value)
+                }));
+                localStorage.setItem(`SEC_${key}`, encrypted);
+            },
+            
+            get: function(key) {
+                const encrypted = localStorage.getItem(`SEC_${key}`);
+                if (!encrypted) return null;
+                
+                try {
+                    const decrypted = JSON.parse(atob(encrypted));
+                    // Verifica integridade
+                    if (decrypted.checksum !== this.createChecksum(decrypted.data)) {
+                        console.warn('Dados corrompidos ou manipulados');
+                        return null;
+                    }
+                    return decrypted.data;
+                } catch (e) {
+                    return null;
+                }
+            },
+            
+            createChecksum: function(data) {
+                let str = JSON.stringify(data);
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                    hash |= 0;
+                }
+                return hash.toString(16);
+            }
+        };
+
+        // Substituir localStorage padrão
+        window.secureStorage = secureStorage;
+    </script>
+
     <style>
         /* ========= VARIÁVEIS ROXO/AZUL ========= */
         :root {
@@ -281,25 +459,6 @@
             padding: 60px 0;
             position: relative;
             overflow: hidden;
-        }
-
-        .tagline {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
-            color: var(--primary-purple);
-            margin-bottom: 10px;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
-        }
-
-        .nickname {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.8rem;
-            margin: 10px 0;
-            font-weight: 800;
-            background: var(--gradient-main);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .avatar-wrapper {
@@ -794,6 +953,25 @@
             50% { transform: scale(1.2); }
         }
 
+        /* ========= DISCORD CARD ========= */
+        .discord-card {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+        }
+        
+        .discord-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-purple);
+            box-shadow: var(--neon-glow);
+        }
+
         /* ========= RESPONSIVIDADE ========= */
         @media (max-width: 768px) {
             .main-title {
@@ -833,11 +1011,6 @@
                 right: 15px;
             }
             
-            .tagline {
-                font-size: 1rem;
-                letter-spacing: 2px;
-            }
-            
             .config-title {
                 font-size: 1.5rem;
             }
@@ -859,10 +1032,6 @@
             
             .section-title {
                 font-size: 2rem;
-            }
-            
-            .tagline {
-                font-size: 0.9rem;
             }
         }
 
@@ -932,25 +1101,6 @@
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-5px); }
         }
-        
-        /* ========= DISCORD CARD ========= */
-        .discord-card {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid var(--glass-border);
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-        }
-        
-        .discord-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-purple);
-            box-shadow: var(--neon-glow);
-        }
     </style>
 </head>
 
@@ -992,27 +1142,21 @@
         <!-- About Page -->
         <div id="about" class="page active">
             <section class="hero-section">
-                <div class="tagline code-font">▄︻デ[̷H̷B̷K̷]̷ ̷[̷T̷a̷v̷i̷n̷h̷]═-</div>
-                
-                <div class="nickname">
-                    <span class="emoji">⭐</span> --------------- <span class="emoji">⭐</span>
-                </div>
-                
+                <!-- APENAS A IMAGEM (textos removidos) -->
                 <div class="avatar-wrapper">
                     <div class="avatar-glow"></div>
                     <img src="https://cdn.discordapp.com/attachments/1351923970567311360/1467513993538306068/perfil_discord.png?ex=6980a869&is=697f56e9&hm=6462aba115067c8f59a832086b7bf859d487430ccdedd77db20ff85bf8b4e247" 
                          alt="Tavinho" class="avatar">
                 </div>
 
-                <div class="tagline code-font">▄︻デ[̷H̷B̷K̷]̷ ̷[̷T̷a̷v̷i̷n̷h̷]═-</div>
-                
+                <!-- NOME ALTERADO PARA "v i p t a v i n h" -->
                 <h1 class="main-title">
-                    <span class="emoji">🚀</span> VipTavinh 
+                    <span class="emoji">🚀</span> v i p t a v i n h 
                     <span class="emoji">💻</span>
                 </h1>
                 
                 <h2 class="config-title">
-                    <span class="emoji">⚙️</span> Configurador de Coisas ;-; 
+                    <span class="emoji">⚙️</span> Configurador de Serv 
                     <span class="emoji">🎮</span>
                 </h2>
                 
@@ -1023,7 +1167,7 @@
                     </div>
                 </div>
 
-                <!-- DISCORD CARD ATUALIZADO -->
+                <!-- DISCORD CARD -->
                 <div class="discord-card glass-effect reveal" onclick="copyDiscord('viptavinh')">
                     <div style="display: flex; align-items: center; gap: 20px;">
                         <div style="font-size: 2rem; background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
@@ -1673,188 +1817,6 @@
             emoji.style.animationDelay = `${Math.random() * 2}s`;
         });
     </script>
-
-    <!-- 🎭 SISTEMA ANTI-DOWNLOAD HBK (COLOCA SEMPRE NO FINAL!) -->
-    <script>
-    (function() {
-        // 🎯 BLOQUEIA SALVAR PÁGINA
-        window.addEventListener('beforeunload', function(e) {
-            if(document.hasFocus()) {
-                e.preventDefault();
-                e.returnValue = '🚫 Esta página está protegida contra downloads!';
-                mostrarAlertaDownload();
-            }
-        });
-        
-        // 🛡️ DETECTA TENTATIVA DE SALVAR (Ctrl+S)
-        document.addEventListener('keydown', function(e) {
-            if((e.ctrlKey || e.metaKey) && e.key === 's') {
-                e.preventDefault();
-                mostrarAlertaDownload();
-                return false;
-            }
-            if((e.ctrlKey || e.metaKey) && e.key === 'p') {
-                e.preventDefault();
-                mostrarAlertaDownload();
-                return false;
-            }
-        });
-        
-        // 🔥 FAKE CONTENT ON SAVE
-        const originalHTML = document.documentElement.outerHTML;
-        window.addEventListener('DOMContentLoaded', function() {
-            // Quando tentar salvar, troca o conteúdo
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if(mutation.type === 'childList') {
-                        // Detecta manipulação suspeita
-                        if(document.body.innerHTML.includes('Save') || 
-                           document.body.innerHTML.includes('Salvar') ||
-                           document.body.innerHTML.includes('download')) {
-                            ativarFakeContent();
-                        }
-                    }
-                });
-            });
-            
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        });
-        
-        // 🎭 CONTEÚDO FAKE
-        function ativarFakeContent() {
-            document.body.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: black;
-                    color: red;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-family: monospace;
-                    text-align: center;
-                    padding: 20px;
-                    z-index: 999999;
-                ">
-                    <div>
-                        <h1 style="font-size: 40px; margin-bottom: 20px;">🚫 ACESSO BLOQUEADO</h1>
-                        <p style="font-size: 20px; color: #ff5555;">
-                            Esta página está protegida por ▄︻デ[̷H̷B̷K̷]̷ ̷[̷T̷a̷v̷i̷n̷h̷]═-
-                        </p>
-                        <p style="font-size: 16px; color: #888; margin-top: 30px;">
-                            O conteúdo real está hospedado em servidor seguro<br>
-                            Esta é apenas uma versão de segurança
-                        </p>
-                        <button onclick="location.reload()" style="
-                            margin-top: 30px;
-                            padding: 15px 40px;
-                            background: red;
-                            color: white;
-                            border: none;
-                            border-radius: 10px;
-                            font-size: 18px;
-                            cursor: pointer;
-                        ">
-                            VOLTAR AO SITE
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            // Bloqueia mais tentativas
-            setTimeout(() => {
-                window.location.href = window.location.href;
-            }, 5000);
-        }
-        
-        // 🚨 ALERTA DE DOWNLOAD
-        function mostrarAlertaDownload() {
-            const alertDiv = document.createElement('div');
-            alertDiv.id = 'download-alert';
-            alertDiv.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(135deg, #ff0000, #8b0000);
-                color: white;
-                padding: 20px;
-                border-radius: 15px;
-                z-index: 999999;
-                box-shadow: 0 0 30px red;
-                font-family: 'JetBrains Mono', monospace;
-                max-width: 400px;
-                animation: slideIn 0.3s ease;
-            `;
-            alertDiv.innerHTML = `
-                <h3 style="margin: 0 0 10px 0; color: white;">⚠️ DOWNLOAD BLOQUEADO</h3>
-                <p style="margin: 0; font-size: 14px;">
-                    Esta página está protegida contra downloads.<br>
-                    Conteúdo de ▄︻デ[̷H̷B̷K̷]̷ ̷[̷T̷a̷v̷i̷n̷h̷]═-
-                </p>
-                <button onclick="this.parentElement.remove()" style="
-                    margin-top: 15px;
-                    padding: 8px 20px;
-                    background: white;
-                    color: red;
-                    border: none;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-weight: bold;
-                ">
-                    OK
-                </button>
-            `;
-            
-            document.body.appendChild(alertDiv);
-            
-            setTimeout(() => {
-                if(alertDiv.parentElement) {
-                    alertDiv.style.animation = 'slideOut 0.3s ease';
-                    setTimeout(() => alertDiv.remove(), 300);
-                }
-            }, 5000);
-            
-            // Adiciona estilos de animação
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        // 📦 DETECTA FERRAMENTAS DE DOWNLOAD
-        const ferramentas = ['wget', 'curl', 'httrack', 'teleport', 'sitebulk', 'offline'];
-        setInterval(() => {
-            const userAgent = navigator.userAgent.toLowerCase();
-            ferramentas.forEach(ferramenta => {
-                if(userAgent.includes(ferramenta)) {
-                    ativarFakeContent();
-                }
-            });
-            
-            // Detecta se estão tentando copiar o HTML
-            if(document.documentElement.outerHTML.length > originalHTML.length * 1.5) {
-                ativarFakeContent();
-            }
-        }, 2000);
-        
-        console.log('%c🔒 Sistema anti-download HBK ativado!', 
-            'color: #ff0000; font-size: 16px; font-weight: bold; background: black; padding: 10px;');
-    })();
-    </script>
-    <!-- 🎭 FIM DO SISTEMA ANTI-DOWNLOAD -->
 </body>
+
 </html>
