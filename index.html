@@ -3,198 +3,252 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>PC Gamer 3D — RGB Roxo</title>
+<title>Setup Gamer 3D — Windows 10 Boot</title>
 <style>
-  html,body{margin:0;height:100%;overflow:hidden;background:#000}
-  #hud{position:fixed;top:12px;left:12px;z-index:1;color:#d8b4fe;font:12px/1.5 monospace;
-       background:rgba(10,5,20,.65);padding:8px 12px;border:1px solid #7c3aed55;border-radius:8px}
+  html,body{margin:0;height:100%;overflow:hidden;
+    background:radial-gradient(1200px 700px at 50% 30%, #17102b, #050505)}
+  #hud{position:fixed;top:12px;left:12px;z-index:10;color:#d8b4fe;font:12px/1.6 monospace;
+    background:rgba(10,5,20,.7);padding:8px 12px;border:1px solid #7c3aed55;border-radius:8px}
 </style>
 </head>
 <body>
-<div id="hud">🖥️ PC Gamer 3D — arraste p/ girar • scroll p/ zoom</div>
+<div id="hud">🖥️ Iniciando o Windows 10...</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
 <script>
-/* ========== CENA / CÂMERA / RENDER ========== */
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x060606);
-scene.fog = new THREE.Fog(0x060606, 40, 90);
+const hudEl=document.getElementById('hud');
+const hud=m=>hudEl.innerHTML=m;
 
-const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, .1, 200);
-const renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(innerWidth, innerHeight);
+/* ========== CENA ========== */
+const scene=new THREE.Scene();
+scene.fog=new THREE.Fog(0x060606,45,100);
+const cssScene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,200);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setSize(innerWidth,innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.setClearColor(0x000000,0);
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.domElement.style.cssText='position:absolute;top:0;left:0;z-index:2;pointer-events:none';
 document.body.appendChild(renderer.domElement);
+let cssRenderer=null;
+if(THREE.CSS3DRenderer){
+  cssRenderer=new THREE.CSS3DRenderer(); cssRenderer.setSize(innerWidth,innerHeight);
+  cssRenderer.domElement.style.cssText='position:absolute;top:0;left:0;z-index:1;pointer-events:none';
+  document.body.appendChild(cssRenderer.domElement);
+}
 
 /* ========== LUZES ========== */
-scene.add(new THREE.AmbientLight(0x332244, 1.1));
-const key = new THREE.SpotLight(0xffffff, .7);
-key.position.set(12,28,14); key.castShadow = true; scene.add(key);
-const rim = new THREE.PointLight(0x7c3aed, 1.1, 70);
-rim.position.set(-14,10,-12); scene.add(rim);
+scene.add(new THREE.AmbientLight(0x332244,1.1));
+const key=new THREE.SpotLight(0xffffff,.7); key.position.set(12,30,16); key.castShadow=true; scene.add(key);
+const rim=new THREE.PointLight(0x7c3aed,1.1,80); rim.position.set(-20,12,-14); scene.add(rim);
 
 /* ========== MESA ========== */
-const table = new THREE.Mesh(new THREE.BoxGeometry(70,1.4,36),
-  new THREE.MeshStandardMaterial({color:0xc8c8c8, roughness:.95}));
-table.position.y = -.7; table.receiveShadow = true; scene.add(table);
+const table=new THREE.Mesh(new THREE.BoxGeometry(95,1.4,42),
+  new THREE.MeshStandardMaterial({color:0xc8c8c8,roughness:.9}));
+table.position.set(-6,-.7,0); table.receiveShadow=true; scene.add(table);
 
 /* ========== MATERIAIS ========== */
-const metal = new THREE.MeshStandardMaterial({color:0x15151a, metalness:.85, roughness:.35});
-const dark  = new THREE.MeshStandardMaterial({color:0x0b0b0e, metalness:.5, roughness:.6});
-const silver= new THREE.MeshStandardMaterial({color:0xb9bcc4, metalness:.9, roughness:.25});
-const glass = new THREE.MeshPhysicalMaterial({color:0x99bbff, metalness:0, roughness:.05,
-  transparent:true, opacity:.13, side:THREE.DoubleSide, depthWrite:false});
-const rgbA  = new THREE.MeshStandardMaterial({color:0x111111, emissive:0xb06bff, emissiveIntensity:2});
-const rgbB  = new THREE.MeshStandardMaterial({color:0x111111, emissive:0x7c3aed, emissiveIntensity:2});
-const rgbW  = new THREE.MeshStandardMaterial({color:0x111111, emissive:0xe6d5ff, emissiveIntensity:1.6});
+const metal=new THREE.MeshStandardMaterial({color:0x15151a,metalness:.85,roughness:.35});
+const dark =new THREE.MeshStandardMaterial({color:0x0b0b0e,metalness:.5,roughness:.6});
+const silver=new THREE.MeshStandardMaterial({color:0xb9bcc4,metalness:.9,roughness:.25});
+const glass=new THREE.MeshPhysicalMaterial({color:0x99bbff,roughness:.05,transparent:true,opacity:.13,side:THREE.DoubleSide,depthWrite:false});
+const rgbA=new THREE.MeshStandardMaterial({color:0x111111,emissive:0xb06bff,emissiveIntensity:2});
+const rgbB=new THREE.MeshStandardMaterial({color:0x111111,emissive:0x7c3aed,emissiveIntensity:2});
+const rgbW=new THREE.MeshStandardMaterial({color:0x111111,emissive:0xe6d5ff,emissiveIntensity:1.6});
 
-/* ========== TEXTURAS (telas geradas em canvas) ========== */
-function screenTex(){ // pôr do sol roxo com palmeira (igual à foto)
-  const c=document.createElement('canvas'); c.width=256; c.height=512;
-  const x=c.getContext('2d');
-  const g=x.createLinearGradient(0,0,0,512);
-  g.addColorStop(0,'#1b0638'); g.addColorStop(.4,'#6d28d9');
-  g.addColorStop(.62,'#c4a5ff'); g.addColorStop(.66,'#2a0a4e'); g.addColorStop(1,'#160425');
-  x.fillStyle=g; x.fillRect(0,0,256,512);
-  x.fillStyle='#f1e4ff'; x.beginPath(); x.arc(168,296,22,0,6.3); x.fill(); // sol
-  x.strokeStyle='rgba(240,225,255,.45)'; x.lineWidth=3;                    // reflexo na água
-  for(let i=0;i<12;i++){const y=352+i*12; x.beginPath(); x.moveTo(150-i*4,y); x.lineTo(186+i*4,y); x.stroke();}
-  x.strokeStyle='#0d0320'; x.lineCap='round';                              // palmeira
-  x.lineWidth=11; x.beginPath(); x.moveTo(86,352); x.quadraticCurveTo(74,250,92,178); x.stroke();
-  x.lineWidth=7;
-  for(let a=0;a<7;a++){const ang=-Math.PI*.95+a*.32;
-    x.beginPath(); x.moveTo(92,178);
-    x.quadraticCurveTo(92+Math.cos(ang)*46,178+Math.sin(ang)*46,92+Math.cos(ang)*78,178+Math.sin(ang)*78+26);
-    x.stroke();}
-  return new THREE.CanvasTexture(c);
-}
-function logoTex(){ // emblema brilhante do water cooler
-  const c=document.createElement('canvas'); c.width=c.height=128;
-  const x=c.getContext('2d');
-  x.fillStyle='#05010a'; x.fillRect(0,0,128,128);
-  x.strokeStyle='#c084fc'; x.lineWidth=8; x.lineCap='round';
-  x.beginPath(); x.moveTo(20,84); x.quadraticCurveTo(64,20,108,64); x.stroke();
-  x.beginPath(); x.moveTo(34,92); x.quadraticCurveTo(64,52,104,84); x.stroke();
-  return new THREE.CanvasTexture(c);
-}
+function mk(w,h,d,mat,parent){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+  m.castShadow=m.receiveShadow=true;(parent||scene).add(m);return m;}
+function box(w,h,d,mat,x,y,z){const m=mk(w,h,d,mat,pc);m.position.set(x,y,z);return m;}
 
-/* ========== GABINETE ========== */
-const pc = new THREE.Group(); scene.add(pc);
-const W=10.5, H=11, D=9.5;
-function box(w,h,d,mat,x,y,z){
-  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
-  m.position.set(x,y,z); m.castShadow=m.receiveShadow=true; pc.add(m); return m;
-}
-box(W+1.2,.9,D+1.2, metal, 0,.45,0);            // base
-box(W+1.2,.9,D+1.2, metal, 0,H+.45,0);          // topo
-[[-1,-1],[-1,1],[1,-1],[1,1]].forEach(p=>box(.7,H,.7, metal, p[0]*W/2, H/2+.45, p[1]*D/2));
-const gf=new THREE.Mesh(new THREE.PlaneGeometry(W,H),glass);   // vidro frontal
-gf.position.set(0,H/2+.45,D/2+.1); pc.add(gf);
-const gs=new THREE.Mesh(new THREE.PlaneGeometry(D,H),glass);   // vidro lateral
-gs.rotation.y=Math.PI/2; gs.position.set(W/2+.1,H/2+.45,0); pc.add(gs);
+/* brilho (sprite aditivo) */
+const glowTexC=(()=>{const c=document.createElement('canvas');c.width=c.height=128;
+  const x=c.getContext('2d');const g=x.createRadialGradient(64,64,0,64,64,64);
+  g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(1,'rgba(255,255,255,0)');
+  x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c);})();
+function glow(color,s,parent,x,y,z){const s2=new THREE.Sprite(new THREE.SpriteMaterial({
+  map:glowTexC,color,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+  s2.scale.set(s,s,1);s2.position.set(x,y,z);(parent||pc).add(s2);return s2;}
 
-/* placa-mãe + CPU (water cooler com telinha) */
-box(6.5,7,.4, dark, -1.2,6,-D/2+.5);
-box(2.4,2.4,1, dark, -1.2,7,-D/2+1.1);
-const cpuS=new THREE.Mesh(new THREE.PlaneGeometry(1.9,1.9),
-  new THREE.MeshBasicMaterial({map:logoTex()}));
+/* ========== GABINETE (PC) ========== */
+const pc=new THREE.Group(); scene.add(pc);
+const W=10.5,H=11,D=9.5;
+box(W+1.2,.9,D+1.2,metal,0,.45,0); box(W+1.2,.9,D+1.2,metal,0,H+.45,0);
+[[-1,-1],[-1,1],[1,-1],[1,1]].forEach(p=>box(.7,H,.7,metal,p[0]*W/2,H/2+.45,p[1]*D/2));
+const gf=new THREE.Mesh(new THREE.PlaneGeometry(W,H),glass); gf.position.set(0,H/2+.45,D/2+.1); pc.add(gf);
+const gs=new THREE.Mesh(new THREE.PlaneGeometry(D,H),glass); gs.rotation.y=Math.PI/2; gs.position.set(W/2+.1,H/2+.45,0); pc.add(gs);
+box(6.5,7,.4,dark,-1.2,6,-D/2+.5);                       // placa-mãe
+box(2.4,2.4,1,dark,-1.2,7,-D/2+1.1);                     // watercooler CPU
+const logoC=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');
+  x.fillStyle='#05010a';x.fillRect(0,0,128,128);x.strokeStyle='#c084fc';x.lineWidth=8;x.lineCap='round';
+  x.beginPath();x.moveTo(20,84);x.quadraticCurveTo(64,20,108,64);x.stroke();
+  x.beginPath();x.moveTo(34,92);x.quadraticCurveTo(64,52,104,84);x.stroke();return new THREE.CanvasTexture(c);})();
+const cpuS=new THREE.Mesh(new THREE.PlaneGeometry(1.9,1.9),new THREE.MeshBasicMaterial({map:logoC}));
 cpuS.position.set(-1.2,7,-D/2+1.62); pc.add(cpuS);
-
-/* memórias RAM com RGB */
-for(let i=0;i<4;i++){
-  box(.35,2.6,.7, dark, 1.6+i*.7, 7, -D/2+.9);
-  box(.38,.25,.72, rgbA, 1.6+i*.7, 8.35, -D/2+.9);
-}
-
-/* shroud da fonte + GPU vertical com detalhe prateado */
-box(W-1,2.2,D-1, dark, -.5,2,0);
-box(1.4,3.4,6, dark, -1.5,3.6,.5);
-box(1.45,.2,6, rgbB, -1.5,5.35,.5);
-const gpuF=new THREE.Mesh(new THREE.PlaneGeometry(5,2.6),
-  new THREE.MeshStandardMaterial({color:0x0a0a0d, roughness:.4, metalness:.6}));
-gpuF.rotation.y=Math.PI/2; gpuF.position.set(-.79,3.6,.5); pc.add(gpuF);
-const acc=box(.1,1.4,2.4, silver, -.74,3.5,.9); acc.rotation.x=.6;
-
-/* tela vertical (palmeira roxa) */
-box(3.9,8.9,.3, metal, W/2-2.2, H/2+.45, D/2-1);
-const vs=new THREE.Mesh(new THREE.PlaneGeometry(3.6,8.6),
-  new THREE.MeshBasicMaterial({map:screenTex()}));
-vs.position.set(W/2-2.2, H/2+.45, D/2-.83); pc.add(vs);
-
-/* tubos do water cooler */
-function tube(pts){
-  const c=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(p[0],p[1],p[2])));
-  pc.add(new THREE.Mesh(new THREE.TubeGeometry(c,32,.22,10), dark));
-}
+for(let i=0;i<4;i++){ box(.35,2.6,.7,dark,1.6+i*.7,7,-D/2+.9); box(.38,.25,.72,rgbA,1.6+i*.7,8.35,-D/2+.9); }
+box(W-1,2.2,D-1,dark,-.5,2,0);                           // shroud da fonte
+box(1.4,3.4,6,dark,-1.5,3.6,.5); box(1.45,.2,6,rgbB,-1.5,5.35,.5);   // GPU vertical
+const acc=box(.1,1.4,2.4,silver,-.74,3.5,.9); acc.rotation.x=.6;
+/* tela vertical com palmeira */
+const palmC=(()=>{const c=document.createElement('canvas');c.width=256;c.height=512;const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,512);
+  g.addColorStop(0,'#1b0638');g.addColorStop(.4,'#6d28d9');g.addColorStop(.62,'#c4a5ff');
+  g.addColorStop(.66,'#2a0a4e');g.addColorStop(1,'#160425');
+  x.fillStyle=g;x.fillRect(0,0,256,512);
+  x.fillStyle='#f1e4ff';x.beginPath();x.arc(168,296,22,0,6.3);x.fill();
+  x.strokeStyle='rgba(240,225,255,.45)';x.lineWidth=3;
+  for(let i=0;i<12;i++){const y=352+i*12;x.beginPath();x.moveTo(150-i*4,y);x.lineTo(186+i*4,y);x.stroke();}
+  x.strokeStyle='#0d0320';x.lineCap='round';x.lineWidth=11;
+  x.beginPath();x.moveTo(86,352);x.quadraticCurveTo(74,250,92,178);x.stroke();x.lineWidth=7;
+  for(let a=0;a<7;a++){const an=-Math.PI*.95+a*.32;x.beginPath();x.moveTo(92,178);
+    x.quadraticCurveTo(92+Math.cos(an)*46,178+Math.sin(an)*46,92+Math.cos(an)*78,178+Math.sin(an)*78+26);x.stroke();}
+  return new THREE.CanvasTexture(c);})();
+box(3.9,8.9,.3,metal,W/2-2.2,H/2+.45,D/2-1);
+const vs=new THREE.Mesh(new THREE.PlaneGeometry(3.6,8.6),new THREE.MeshBasicMaterial({map:palmC}));
+vs.position.set(W/2-2.2,H/2+.45,D/2-.83); pc.add(vs);
+/* tubos */
+function tube(pts){const c=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(p[0],p[1],p[2])));
+  pc.add(new THREE.Mesh(new THREE.TubeGeometry(c,32,.22,10),dark));}
 tube([[-.2,7.6,-D/2+1.4],[1.5,8.2,-D/2+2.2],[3.4,7.6,-1],[4.2,6,1]]);
 tube([[-.2,6.6,-D/2+1.4],[1.8,6.8,-D/2+2.6],[3.6,5.6,0],[4.2,4.6,1]]);
-
-/* fans ARGB (giratórios) */
+/* fans */
 const fans=[];
-function fan(x,y,z,ry){
-  const g=new THREE.Group();
-  g.add(new THREE.Mesh(new THREE.TorusGeometry(1.55,.14,12,48), rgbA));
-  const hub=new THREE.Mesh(new THREE.CylinderGeometry(.45,.45,.35,20),dark);
-  hub.rotation.x=Math.PI/2; g.add(hub);
-  const blades=new THREE.Group();
-  for(let i=0;i<7;i++){
-    const b=new THREE.Mesh(new THREE.BoxGeometry(1.15,.08,.4),dark);
-    b.position.x=.9; b.rotation.x=.7;
-    const piv=new THREE.Group(); piv.rotation.z=i*Math.PI*2/7; piv.add(b); blades.add(piv);
-  }
-  g.add(blades); g.rotation.y=ry||0; g.position.set(x,y,z);
-  pc.add(g); fans.push(blades);
-}
-fan(W/2-.9,4.3,-1.5,Math.PI/2);
-fan(W/2-.9,7.6,-1.5,Math.PI/2);
-fan(-W/2+.9,6.8,-2,Math.PI/2);
-
-/* fitas RGB no topo + botão power */
-for(let i=0;i<3;i++) box(W*.7,.14,.5, rgbW, 0, H-.1, -2.2+i*2.2);
+function fan(x,y,z,ry){const g=new THREE.Group();
+  g.add(new THREE.Mesh(new THREE.TorusGeometry(1.55,.14,12,48),rgbA));
+  const hub=new THREE.Mesh(new THREE.CylinderGeometry(.45,.45,.35,20),dark);hub.rotation.x=Math.PI/2;g.add(hub);
+  const bl=new THREE.Group();
+  for(let i=0;i<7;i++){const b=new THREE.Mesh(new THREE.BoxGeometry(1.15,.08,.4),dark);
+    b.position.x=.9;b.rotation.x=.7;const pv=new THREE.Group();pv.rotation.z=i*Math.PI*2/7;pv.add(b);bl.add(pv);}
+  g.add(bl);g.rotation.y=ry||0;g.position.set(x,y,z);pc.add(g);fans.push(bl);
+  glow(0xb06bff,5,g,0,0,0);}
+fan(W/2-.9,4.3,-1.5,Math.PI/2); fan(W/2-.9,7.6,-1.5,Math.PI/2); fan(-W/2+.9,6.8,-2,Math.PI/2);
+for(let i=0;i<3;i++) box(W*.7,.14,.5,rgbW,0,H-.1,-2.2+i*2.2);
 const pwr=new THREE.Mesh(new THREE.CylinderGeometry(.18,.18,.12,16),rgbW);
 pwr.position.set(2.5,.96,D/2+.2); pc.add(pwr);
+const glowI=new THREE.PointLight(0xa855f7,1.6,26); glowI.position.set(0,6.5,0); pc.add(glowI);
+const glowI2=new THREE.PointLight(0x7c3aed,1.2,20); glowI2.position.set(3,4,2); pc.add(glowI2);
 
-/* brilho interno roxo */
-const glow =new THREE.PointLight(0xa855f7,1.6,26); glow.position.set(0,6.5,0); pc.add(glow);
-const glow2=new THREE.PointLight(0x7c3aed,1.2,20); glow2.position.set(3,4,2); pc.add(glow2);
+/* ========== MONITOR ========== */
+const mon=new THREE.Group(); mon.position.set(-17,0,-1); mon.rotation.y=.32; scene.add(mon);
+mk(6,.3,3.2,metal,mon).position.y=.15;
+mk(.7,3.4,.7,metal,mon).position.y=1.9;
+mk(11.8,.25,.25,metal,mon).position.set(0,8.72,0);
+mk(11.8,.25,.25,metal,mon).position.set(0,2.08,0);
+mk(.25,6.9,.25,metal,mon).position.set(-5.82,5.4,0);
+mk(.25,6.9,.25,metal,mon).position.set(5.82,5.4,0);
+const backM=mk(11.8,6.9,.15,metal,mon); backM.position.set(0,5.4,-.15); backM.visible=false;
 
-/* ========== CONTROLES (órbita manual) ========== */
-let theta=.65, phi=1.12, radius=26, dragging=false, px=0, py=0;
-const target=new THREE.Vector3(0,6,0);
+/* tela do monitor (canvas animado = boot Windows 10) */
+const scrC=document.createElement('canvas'); scrC.width=1024; scrC.height=576;
+const sx=scrC.getContext('2d');
+const scrTex=new THREE.CanvasTexture(scrC); scrTex.encoding=THREE.sRGBEncoding;
+const screenM=new THREE.Mesh(new THREE.PlaneGeometry(11.4,6.4),new THREE.MeshBasicMaterial({map:scrTex}));
+screenM.position.set(0,5.4,.02); mon.add(screenM);
+const anchor=new THREE.Object3D(); anchor.position.set(0,5.4,.05); mon.add(anchor);
+
+function winLogo(cx,cy,s,col){sx.fillStyle=col;
+  sx.fillRect(cx-s-2,cy-s-2,s,s);sx.fillRect(cx+2,cy-s-2,s,s);
+  sx.fillRect(cx-s-2,cy+2,s,s);sx.fillRect(cx+2,cy+2,s,s);}
+function spinner(cx,cy,r,t){sx.fillStyle='#fff';
+  for(let i=0;i<6;i++){const a=t*2.6+i*Math.PI/3;
+    sx.beginPath();sx.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,6,0,6.3);sx.fill();}}
+function drawDesktop(){
+  const g=sx.createLinearGradient(0,0,1024,576);
+  g.addColorStop(0,'#01163f');g.addColorStop(.5,'#0b3f8f');g.addColorStop(1,'#021026');
+  sx.fillStyle=g;sx.fillRect(0,0,1024,576);
+  sx.save();sx.translate(512,290);sx.rotate(.6);
+  const rg=sx.createRadialGradient(0,0,10,0,0,430);
+  rg.addColorStop(0,'rgba(130,200,255,.85)');rg.addColorStop(1,'rgba(0,40,120,0)');
+  sx.fillStyle=rg;sx.fillRect(-520,-320,1040,640);sx.restore();
+  winLogo(470,270,40,'rgba(255,255,255,.9)');
+  sx.fillStyle='#0d0d12';sx.fillRect(0,536,1024,40);          // taskbar
+  winLogo(26,556,8,'#0078d7');                                 // botão iniciar
+  sx.fillStyle='#333a56';sx.fillRect(60,544,24,24);sx.fillRect(94,544,24,24);sx.fillRect(128,544,24,24);
+  const d=new Date();sx.fillStyle='#fff';sx.font='18px Segoe UI,sans-serif';
+  sx.fillText(String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'),952,562);}
+let bootT=0,checked=false,useIframe=false;
+function drawScreen(t,dt){bootT+=dt;
+  sx.fillStyle='#000';sx.fillRect(0,0,1024,576);
+  if(bootT>1&&bootT<5.5){winLogo(512,230,60,'#0078d7');spinner(512,400,55,t);}
+  else if(bootT>=5.5&&bootT<8.5){sx.fillStyle='#fff';sx.font='44px Segoe UI,sans-serif';
+    sx.textAlign='center';sx.fillText('Bem-vindo',512,300);sx.textAlign='left';spinner(512,380,45,t);}
+  else if(bootT>=8.5){
+    if(!checked){checked=true;
+      fetch('index2.html',{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;
+        useIframe=!!cssRenderer; attachIframe();
+        hud(useIframe?'✅ index2.html detectado — exibindo AO VIVO no monitor':'⚠️ sem CSS3D — modo interno');})
+      .catch(()=>hud('⚠️ index2.html não encontrado — área de trabalho interna ativa<br>(sirva via servidor local p/ o monitor ler o index2.html)'));}
+    if(!useIframe)drawDesktop();}
+  if(bootT>1&&bootT<5.5)hud('🖥️ Iniciando o Windows 10...');
+  else if(bootT>=5.5&&bootT<8.5)hud('👋 Bem-vindo');
+  scrTex.needsUpdate=true;}
+
+/* iframe AO VIVO (index2.html) dentro do monitor */
+let cssObj=null,wrapEl=null;
+function attachIframe(){
+  wrapEl=document.createElement('div');
+  wrapEl.style.cssText='width:1140px;height:640px;background:#000;pointer-events:none';
+  const f=document.createElement('iframe');
+  f.src='index2.html'; f.style.cssText='width:100%;height:100%;border:0';
+  wrapEl.appendChild(f);
+  cssObj=new THREE.CSS3DObject(wrapEl); cssObj.scale.setScalar(.01);
+  cssScene.add(cssObj);}
+
+/* ========== TECLADO / MOUSE ========== */
+const kb=new THREE.Group(); kb.position.set(-17,0,5.5); kb.rotation.y=.15; scene.add(kb);
+mk(6.4,.25,2.4,dark,kb).position.y=.12;
+for(let r=0;r<4;r++)for(let c=0;c<12;c++)
+  mk(.42,.12,.42,metal,kb).position.set(-2.75+c*.5,.3,-.9+r*.6);
+mk(.5,.25,2.4,rgbB,kb).position.set(3.4,.12,0);           // brilho lateral RGB
+const pad=mk(4,.06,3,new THREE.MeshStandardMaterial({color:0x111116,roughness:.9}),scene);
+pad.position.set(-10.5,.03,5.5);
+const mouse=new THREE.Mesh(new THREE.SphereGeometry(.45,20,16),dark);
+mouse.scale.set(.7,.5,1.2); mouse.position.set(-10.5,.3,5.5); scene.add(mouse);
+glow(0x7c3aed,2.5,scene,-10.5,.6,5.5);
+
+/* ========== CONTROLES ========== */
+let theta=.55,phi=1.12,radius=38,dragging=false,px=0,py=0;
+const target=new THREE.Vector3(-6,5.5,0);
 addEventListener('mousedown',e=>{dragging=true;px=e.clientX;py=e.clientY});
 addEventListener('mouseup',()=>dragging=false);
 addEventListener('mousemove',e=>{if(!dragging)return;
-  theta-=(e.clientX-px)*.005; phi=Math.min(Math.max(phi-(e.clientY-py)*.005,.25),1.45);
-  px=e.clientX;py=e.clientY;});
-addEventListener('wheel',e=>{radius=Math.min(Math.max(radius+e.deltaY*.02,12),45)});
+  theta-=(e.clientX-px)*.005;phi=Math.min(Math.max(phi-(e.clientY-py)*.005,.25),1.45);px=e.clientX;py=e.clientY;});
+addEventListener('wheel',e=>{radius=Math.min(Math.max(radius+e.deltaY*.02,14),55)});
 addEventListener('touchstart',e=>{if(e.touches.length===1){dragging=true;px=e.touches[0].clientX;py=e.touches[0].clientY;}});
 addEventListener('touchmove',e=>{if(dragging&&e.touches.length===1){const t=e.touches[0];
-  theta-=(t.clientX-px)*.005; phi=Math.min(Math.max(phi-(t.clientY-py)*.005,.25),1.45);
-  px=t.clientX;py=t.clientY; e.preventDefault();}},{passive:false});
+  theta-=(t.clientX-px)*.005;phi=Math.min(Math.max(phi-(t.clientY-py)*.005,.25),1.45);
+  px=t.clientX;py=t.clientY;e.preventDefault();}},{passive:false});
 addEventListener('touchend',()=>dragging=false);
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight);});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);if(cssRenderer)cssRenderer.setSize(innerWidth,innerHeight);});
 
 /* ========== LOOP ========== */
-let t=0;
-(function loop(){
+const vp=new THREE.Vector3(),vq=new THREE.Quaternion(),fwd=new THREE.Vector3();
+let t=0,last=performance.now();
+(function loop(now){
   requestAnimationFrame(loop);
-  t+=.016;
-  if(!dragging) theta+=.0012;                       // vitrine girando sozinha
-  fans.forEach((b,i)=>b.rotation.z+=.12+i*.02);     // fans girando
-  rgbA.emissiveIntensity=1.8+Math.sin(t*2.2)*.6;    // RGB pulsando
+  const dt=Math.min((now-last)/1000,.05); last=now; t+=dt;
+  if(!dragging)theta+=.0012;
+  fans.forEach((b,i)=>b.rotation.z+=.12+i*.02);
+  rgbA.emissiveIntensity=1.8+Math.sin(t*2.2)*.6;
   rgbB.emissiveIntensity=1.8+Math.cos(t*1.8)*.6;
-  glow.intensity=1.5+Math.sin(t*2.2)*.4;
-  camera.position.set(
-    target.x+radius*Math.sin(phi)*Math.sin(theta),
-    target.y+radius*Math.cos(phi),
-    target.z+radius*Math.sin(phi)*Math.cos(theta));
+  glowI.intensity=1.5+Math.sin(t*2.2)*.4;
+  drawScreen(t,dt);
+  camera.position.set(target.x+radius*Math.sin(phi)*Math.sin(theta),
+    target.y+radius*Math.cos(phi),target.z+radius*Math.sin(phi)*Math.cos(theta));
   camera.lookAt(target);
+  /* sincroniza iframe na tela do monitor + esconde quando visto por trás */
+  if(cssObj){anchor.getWorldPosition(vp);anchor.getWorldQuaternion(vq);
+    fwd.set(0,0,1).applyQuaternion(vq);
+    const front=camera.position.clone().sub(vp).dot(fwd)>0;
+    cssObj.position.copy(vp).addScaledVector(fwd,.03);
+    cssObj.quaternion.copy(vq);
+    wrapEl.style.visibility=front?'visible':'hidden';
+    screenM.visible=!front; backM.visible=!front;}
   renderer.render(scene,camera);
-})();
+  if(cssRenderer)cssRenderer.render(cssScene,camera);
+})(performance.now());
 </script>
 </body>
 </html>
